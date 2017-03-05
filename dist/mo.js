@@ -1,0 +1,6 @@
+/*!
+ * MoUI v1.0.0 (https://github.com/S-mohan/mo-vue)
+ * (c) smohan <https://smohan.net>
+ * license MIT
+ */
+!function(e,n){"object"==typeof exports&&"object"==typeof module?module.exports=n(require("vue")):"function"==typeof define&&define.amd?define(["vue"],n):"object"==typeof exports?exports.MoUi=n(require("vue")):e.MoUi=n(e.Vue)}(this,function(e){return webpackJsonpMoUi([0],{12:function(e,n,t){t(20);var o=t(18)(t(50),t(19),null,null);e.exports=o.exports},13:function(e,n){},17:function(n,t){n.exports=e},19:function(e,n){e.exports={render:function(){var e=this,n=e.$createElement;return(e._self._c||n)("div")},staticRenderFns:[]}},20:function(e,n){},50:function(e,n,t){"use strict";Object.defineProperty(n,"__esModule",{value:!0}),n.default={name:"MoPaging"}},51:function(e,n,t){"use strict";(function(e){Object.defineProperty(n,"__esModule",{value:!0});var o=t(16),i=t.n(o),u=t(15),r=t.n(u),c=t(13),f=(t.n(c),t(17)),s=t.n(f),a=t(12),d=t.n(a),p={Paging:d.a},l=function(){r()(p).forEach(function(e){s.a.component(p[e].name,p[e])})};"undefined"!=typeof window&&window.Vue&&l(window.Vue),e.exports=i()({},p,{install:l})}).call(n,t(14)(e))}},[51])});
