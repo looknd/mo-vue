@@ -3,7 +3,7 @@ import './scss/base.scss'
 
 
 import Vue from 'vue'
-import Paging from './components/paging/'
+import Paging from './mo/paging/'
 
 
 const components = {

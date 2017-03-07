@@ -1,0 +1,116 @@
+<style lang="scss">
+	@import '~scss/import.scss';
+	.mo-tabs {
+		@include clearFix;
+		.mo-tabs__nav {
+			padding: 0;
+			margin: 0 0 1rem;
+			position: relative;
+			user-select: none;
+			ul {
+				margin: 0;
+				padding: 0;
+				display: flex;
+				justify-content: space-between;
+				align-items : center;
+				text-align: center;
+				max-width: 100%;
+				list-style: none;
+				border-bottom: 1px solid $color-border;
+			}
+			.mo-tab__item{
+				line-height: rem(24);
+				padding: rem(10);
+				text-align: center;
+				flex: 1 1 auto;
+				cursor: pointer;
+				position: relative;
+				&.mo-tab--active {
+					color: $color-primary;
+					&:after {
+						content: '';
+						width: 100%;
+						height: rem(2);
+						background-color: $color-primary;
+						position: absolute;
+						left: 0;
+						bottom: -1px;
+					}
+				}
+			}
+		}
+		.mo-tabs--contents {
+			position: relative;
+			overflow: hidden;
+			.mo-tabs--body {
+				display: none;
+			}
+		}
+	}
+</style>
+<script>
+	import TabNav from './tab-nav'
+	export default {
+		name : 'MoTabs',
+		components : {
+			TabNav
+		},
+		props : {
+			value : {},
+			activeTab : String 
+		},
+		data () {
+			return {
+				currentTab : this.value || this.activeTab,
+				tabs : []
+			}
+		},
+		watch : {
+			value (val) {
+				this.setCurrentTab(val)
+			},
+			activeTab (val) {
+				this.setCurrentTab(val)
+			}
+		},
+		methods : {
+			tabClickEvent (name) {
+				this.setCurrentTab(name)
+				this.$emit('change', name)
+			},
+			setCurrentTab (name) {
+				this.currentTab = name
+				this.$emit('input', name)
+			},
+			add (tab) {
+				this.tabs.push(tab)
+			}
+		},
+		render (h) {
+
+			let navs = h('div', {
+				'class' : 'mo-tabs__nav',
+			}, [h(TabNav, {
+				props : {
+					tabs : this.tabs,
+					currentTab : this.currentTab
+				},
+				on : {
+					click : this.tabClickEvent
+				}
+			})])
+
+			let body = h ('div', {
+				'class' : 'mo-tabs__contents'
+			}, this.$slots.default)
+
+
+			return h('div', {
+				'class' : 'mo-tabs',
+			}, [
+			navs,
+			body
+			])
+		}
+	}
+</script>

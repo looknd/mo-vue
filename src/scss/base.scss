@@ -1,109 +1,74 @@
 @import './import';
 
-*,
-*:before,
-*:after {
+*, *:before, *:after {
     box-sizing: border-box;
 }
 html {
     font-size: $font-size-root;
-
     -webkit-tap-highlight-color: transparent;
-        -ms-text-size-adjust: 100%;
+    -ms-text-size-adjust: 100%;
     -webkit-text-size-adjust: 100%;
 }
 body {
     font-family: $font-family-base;
     font-size: $font-size-base;
     line-height: $line-height-base;
-
     margin: 0;
     padding: 0;
-
     white-space: normal;
-
     color: $color-text;
 }
 //html5
-article,
-aside,
-footer,
-header,
-nav,
-section,
-figcaption,
-figure,
-main,
-details,
-menu {
+article, aside, footer, header, nav, section, figcaption, figure, main, details, menu {
     display: block;
 }
 summary {
     display: list-item;
 }
-template,
-[hidden] {
+template, [hidden] {
     display: none;
 }
 //heading
-h1,
-h2,
-h3,
-h4,
-h5,
-h6{
+h1, h2, h3, h4, h5, h6 {
     font-weight: 500;
-
     color: $color-title;
 }
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
+h1, h2, h3, h4, h5, h6 {
     line-height: 1.1;
-
     margin-top: 0;
     margin-bottom: .5rem;
 }
-h1{
+h1 {
     font-size: rem($h1);
 }
 h2 {
     font-size: rem($h2);
 }
-h3{
+h3 {
     font-size: rem($h3);
 }
-h4{
+h4 {
     font-size: rem($h4);
 }
-h5{
+h5 {
     font-size: rem($h5);
 }
-h6{
+h6 {
     font-size: rem($h6);
-} 
-strong,
-b {
+}
+strong, b {
     font-weight: 500;
 }
-i,
-em,
-dfn {
+i, em, dfn {
     font-style: italic;
 }
 small {
     font-size: rem($small);
 }
-sub,
-sup {
+sub, sup {
     font-size: 75%;
     line-height: 0;
-
     position: relative;
-
     vertical-align: baseline;
 }
 sub {
@@ -112,10 +77,8 @@ sub {
 sup {
     top: -.5em;
 }
-abbr[title],
-abbr[data-original-title] {
+abbr[title], abbr[data-original-title] {
     cursor: help;
-
     border-bottom: 1px dotted #818a91;
 }
 mark {
@@ -123,108 +86,74 @@ mark {
     background-color: #ff0;
 }
 //form
-a:focus,
-a:active,
-button::-moz-focus-inner,
-input[type='reset']::-moz-focus-inner,
-input[type='button']::-moz-focus-inner,
-input[type='submit']::-moz-focus-inner,
-select::-moz-focus-inner,
-input[type='file'] > input[type='button']::-moz-focus-inner {
+a:focus, a:active, button::-moz-focus-inner, input[type='reset']::-moz-focus-inner, input[type='button']::-moz-focus-inner, input[type='submit']::-moz-focus-inner, select::-moz-focus-inner, input[type='file'] > input[type='button']::-moz-focus-inner {
     border: 0;
     outline: 0;
 }
-
-input,
-button,
-select,
-textarea,
-optgroup {
+input, button, select, textarea, optgroup {
     font-family: inherit;
     line-height: inherit;
-
     margin: 0;
 }
-input[type='radio']:disabled,
-input[type='checkbox']:disabled {
+input[type='radio']:disabled, input[type='checkbox']:disabled {
     cursor: not-allowed;
 }
-input[type='date'],
-input[type='time'],
-input[type='datetime-local'],
-input[type='month'] {
+input[type='date'], input[type='time'], input[type='datetime-local'], input[type='month'] {
     appearance: listbox;
 }
-button,
-input {
+button, input {
     overflow: visible;
 }
-button,
-select {
+button, select {
     text-transform: none;
 }
-button,
-html [type='button'],
-[type='reset'],
-[type='submit'] {
+button, html [type='button'], [type='reset'], [type='submit'] {
     appearance: button;
 }
-
-[type='checkbox'],
-[type='radio'] {
+[type='checkbox'], [type='radio'] {
     box-sizing: border-box;
     padding: 0;
 }
-[type='number']::-webkit-inner-spin-button,
-[type='number']::-webkit-outer-spin-button {
+[type='number']::-webkit-inner-spin-button, [type='number']::-webkit-outer-spin-button {
     height: auto;
-
     appearance: none;
 }
 [type='search'] {
     appearance: none;
 }
-[type='search']::-webkit-search-cancel-button,
-[type='search']::-webkit-search-decoration {
+[type='search']::-webkit-search-cancel-button, [type='search']::-webkit-search-decoration {
     appearance: none;
 }
 ::-webkit-file-upload-button {
     font: inherit;
-
     appearance: button;
 }
 textarea {
     overflow: auto;
-
     resize: vertical;
 }
 fieldset {
     min-width: 0;
     margin: 0;
     padding: 0;
-
     border: 0;
 }
 legend {
     font-size: 1.5rem;
     line-height: inherit;
-
     display: block;
-
     width: 100%;
     margin-bottom: .5rem;
     padding: 0;
 }
 label {
     display: inline-block;
-
     margin-bottom: .5rem;
 }
 [role='button'] {
     cursor: pointer;
 }
-[disabled],
-.disabled {
+[disabled], .disabled {
     cursor: not-allowed;
 }
 //media
@@ -233,17 +162,13 @@ figure {
 }
 img {
     vertical-align: middle;
-
     border: none;
 }
-audio,
-video,
-canvas {
+audio, video, canvas {
     display: inline-block;
 }
 audio:not([controls]) {
     display: none;
-
     height: 0;
 }
 svg:not(:root) {
@@ -251,40 +176,31 @@ svg:not(:root) {
 }
 hr {
     overflow: visible;
-
     box-sizing: content-box;
     height: 0;
 }
 // pre, code
-pre,
-code {
+pre, code {
     font-family: $font-family-code;
 }
 pre {
     font-size: 90%;
-
     display: block;
     overflow: auto;
-
     margin-top: 0;
     margin-bottom: 1rem;
-
     color: #373a3c;
 }
 code {
     font-size: 90%;
-
     padding: .2rem .4rem;
-
     color: #bd4147;
     border-radius: .25rem;
     background-color: #f7f7ff;
 }
 pre code {
     font-size: inherit;
-
     padding: 0;
-
     color: inherit;
     border-radius: 0;
     background-color: transparent;
@@ -292,32 +208,27 @@ pre code {
 address {
     font-style: normal;
     line-height: inherit;
-
     margin-bottom: 1rem;
 }
 //table
 table {
     border-spacing: 0;
     border-collapse: collapse;
-
     background-color: transparent;
 }
 caption {
     padding-top: .75rem;
     padding-bottom: .75rem;
-
     caption-side: bottom;
-
     text-align: left;
-
     color: #818a91;
 }
 th {
     text-align: left;
 }
-td,
-th {
+td, th {
     padding: 0;
+
     &[align='left'] {
         text-align: left;
     }
@@ -329,18 +240,10 @@ th {
     }
 }
 //ul ol li
-blockquote,
-p,
-table,
-ul,
-ol,
-dl {
+blockquote, p, table, ul, ol, dl {
     margin: 0 0 1rem 0;
 }
-ol ol,
-ul ul,
-ol ul,
-ul ol {
+ol ol, ul ul, ol ul, ul ol {
     margin-bottom: 0;
 }
 dt {
@@ -350,19 +253,16 @@ dd {
     margin-bottom: .5rem;
     margin-left: 0;
 }
-ul,
-ol {
+ul, ol {
     padding-left: 2rem;
 }
-
 a {
     cursor: pointer;
     text-decoration: none;
-
     color: $color-primary;
+
     &:hover {
         text-decoration: none;
-
         color: darken($color-primary, 10%);
     }
     &[href]:hover {
