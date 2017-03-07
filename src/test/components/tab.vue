@@ -24,15 +24,20 @@
 		</div>
 		<div class="demo-panel">
 			<header class="demo-panel__header">
-				<h4 class="title"></h4>
+				<h4 class="title">仅Nav</h4>
 			</header>
 			<main class="demo-panel__body">
 				<mo-tabs v-model="activeTab.number">
 					<mo-tab tab="Demo" name="demo">
-						
+						<mo-tabs v-model="demo.demo2">
+							<mo-tab tab="Tab1" name="tab1"></mo-tab>
+							<mo-tab tab="Tab2" name="tab2"></mo-tab>
+							<mo-tab tab="Tab3" name="tab3"></mo-tab>
+							<mo-tab tab="Tab4" name="tab4"></mo-tab>
+						</mo-tabs>
 					</mo-tab>
 					<mo-tab tab="Code" name="code">
-						<!-- <pre-code v-model="code.number"></pre-code> -->
+						<pre-code v-model="code.nav"></pre-code>
 					</mo-tab>
 				</mo-tabs>
 			</main>
@@ -58,7 +63,8 @@
 					number : 'demo'
 				},
 				demo : {
-					demo1 : 'tab1'
+					demo1 : 'tab1',
+					demo2 : 'tab3'
 				},
 				code
 			}	

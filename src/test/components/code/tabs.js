@@ -30,11 +30,25 @@ export default {
 }
 </script>
 `
-export const number = `
+export const nav = `
 <template>
-	<mo-paging :pageIndex="pageIndex" :total="total" @change="pageChange"></mo-paging>
+	<mo-tabs v-model="demo.demo2">
+		<mo-tab tab="Tab1" name="tab1"></mo-tab>
+		<mo-tab tab="Tab2" name="tab2"></mo-tab>
+		<mo-tab tab="Tab3" name="tab3"></mo-tab>
+		<mo-tab tab="Tab4" name="tab4"></mo-tab>
+	</mo-tabs>
 </template>
 <script>
-//同上
+ {
+ 	...
+ 	data () {
+ 		return {
+ 			demo : {
+ 				demo2 : 'tab3'
+ 			}
+ 		}	
+ 	}
+ }
 </script>
 `
