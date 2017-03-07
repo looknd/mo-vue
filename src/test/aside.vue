@@ -16,8 +16,8 @@
 						<router-link to="/paging" tag="li">
 							<a>Paging</a>
 						</router-link>
-						<router-link to="/tab" tag="li">
-							<a>Tab</a>
+						<router-link to="/tabs" tag="li">
+							<a>Tabs</a>
 						</router-link>
 					</template>
 				</drop-menu>

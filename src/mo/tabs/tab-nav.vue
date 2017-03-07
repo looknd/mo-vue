@@ -23,7 +23,6 @@
 			}
 		},
 		data () {
-			console.log(this.tabs)
 			return {
 				items : this.tabs || []
 			}

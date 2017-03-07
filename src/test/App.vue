@@ -18,7 +18,7 @@
 			left: 0;
 			bottom: 0;
 			overflow-y: auto;
-			box-shadow: 0 1px 6px rgba(0,0,0,.12), 0 1px 4px rgba(0,0,0,.12);
+			box-shadow: 0 1px 6px rgba(#000,.12), 0 1px 4px rgba(#000,.12);
 		}
 		> .app-main {
 			padding-left: 240px;
@@ -38,12 +38,25 @@
 			font-weight: bold;
 		}
 		.demo-title {
-			margin: 1rem 0;
+			margin: 2rem 0 1rem 0;
 		}
 		.demo-panel {
-			margin-top: 1rem;
+			margin-top: 2rem;
+			box-shadow: 0 1px 6px rgba(#000,.12), 0 1px 4px rgba(#000,.12);
 			&:nth-of-type(1) {
 				margin-top: 0;
+			}
+			.demo-panel__header {
+				padding: 1rem;
+				border-bottom: 1px solid #ccc;
+				.title {
+					margin: 0;
+					padding-left: 1rem;
+					border-left: 4px solid $color-primary;
+				}
+			}
+			.demo-panel__body {
+				padding: 1rem;
 			}
 		}
 	}

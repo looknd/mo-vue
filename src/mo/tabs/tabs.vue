@@ -37,6 +37,10 @@
 						bottom: -1px;
 					}
 				}
+				&.mo-tab--disabled {
+					opacity: .5;
+					cursor: not-allowed;
+				}
 			}
 		}
 		.mo-tabs--contents {

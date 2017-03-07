@@ -19,7 +19,7 @@ export default new Router({
 		path: '/paging',
 		component: Paging
 	},{
-		path: '/tab',
+		path: '/tabs',
 		component: Tab
 	}],
 	mode: 'history',

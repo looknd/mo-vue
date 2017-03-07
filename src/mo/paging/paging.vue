@@ -10,11 +10,8 @@
 		v-if="config.first && pages > 1"
 		@click="first" v-html="config.first"></li>
 		
-		<li class="paging-item" v-if="!config.first && showPrevMore" @click="first">
-			1
-		</li>
+		<li class="paging-item" v-if="!config.first && showPrevMore" @click="first">1</li>
 		
-
 		<li
 		:class="['paging-item', 'paging-item--more']"
 		v-if="showPrevMore" v-html="config.more"></li>
@@ -28,9 +25,7 @@
 		:class="['paging-item', 'paging-item--more']"
 		v-if="showNextMore" v-html="config.more"></li>
 		
-		<li class="paging-item" v-if="!config.last && showNextMore" @click="last">
-			{{pages}}
-		</li>
+		<li class="paging-item" v-if="!config.last && showNextMore" @click="last">{{pages}}</li>
 
 		<li
 		<li
