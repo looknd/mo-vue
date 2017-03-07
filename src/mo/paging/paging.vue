@@ -28,7 +28,6 @@
 		<li class="paging-item" v-if="!config.last && showNextMore" @click="last">{{pages}}</li>
 
 		<li
-		<li
 		:class="['paging-item', 'paging-item--last', {'paging-item--disabled' : index === pages}]"
 		v-if="config.last && pages > 1"
 		@click="last" v-html="config.last"></li>
