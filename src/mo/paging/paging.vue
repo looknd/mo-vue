@@ -1,5 +1,5 @@
 <template>
-	<ul class="mo-paging" v-if="layout == 'number'">
+	<ul class="mo-paging">
 		<li
 		:class="['paging-item', 'paging-item--prev', {'paging-item--disabled' : index === 1}]"
 		v-if="config.prev"
@@ -10,23 +10,25 @@
 		v-if="config.first && pages > 1"
 		@click="first" v-html="config.first"></li>
 		
-		<li class="paging-item" v-if="!config.first && showPrevMore" @click="first">1</li>
+		<template v-if="config.pager">
+			<li class="paging-item" v-if="!config.first && showPrevMore" @click="first">1</li>
+			
+			<li
+			:class="['paging-item', 'paging-item--more']"
+			v-if="showPrevMore" v-html="config.more"></li>
+			
+			<li
+			:class="['paging-item', {'paging-item--current' : index === pager}]"
+			v-for="pager in pagers"
+			@click="go(pager)">{{ pager }}</li>
+
+			<li
+			:class="['paging-item', 'paging-item--more']"
+			v-if="showNextMore" v-html="config.more"></li>
+			
+			<li class="paging-item" v-if="!config.last && showNextMore" @click="last">{{pages}}</li>
+		</template>		
 		
-		<li
-		:class="['paging-item', 'paging-item--more']"
-		v-if="showPrevMore" v-html="config.more"></li>
-
-		<li
-		:class="['paging-item', {'paging-item--current' : index === pager}]"
-		v-for="pager in pagers"
-		@click="go(pager)">{{ pager }}</li>
-
-		<li
-		:class="['paging-item', 'paging-item--more']"
-		v-if="showNextMore" v-html="config.more"></li>
-		
-		<li class="paging-item" v-if="!config.last && showNextMore" @click="last">{{pages}}</li>
-
 		<li
 		:class="['paging-item', 'paging-item--last', {'paging-item--disabled' : index === pages}]"
 		v-if="config.last && pages > 1"
@@ -35,10 +37,14 @@
 		<li
 		:class="['paging-item', 'paging-item--next', {'paging-item--disabled' : index === pages}]"
 		v-if="config.next" @click="next" v-html="config.next"></li>
+
+		<li class="paging-item__select" v-if="showPageSizes && pageSizes && pageSizes.length">
+			<select class="mo-input--small" v-model="customPageSize" @change="limitChange">
+				<option v-for="p in pageSizes" :value="p">{{p}} / 页</option>
+			</select>
+		</li>
+
 	</ul>
-	<div class="mo-paging mo-paging__text" v-else>
-		
-	</div>
 </template>
 
 <style lang="scss">
@@ -50,16 +56,15 @@
 		font-size: 0;
 		list-style: none;
 		user-select: none;
-		&.mo-paging__text {
-			display: block;
-			font-size: rem(14);
-		}
 		> .paging-item {
-			display: inline;
+			display: inline-block;
 			font-size: rem(14);
 			position: relative;
-			padding: rem(6 12);
-			line-height: 1.42857143;
+			height: 2rem;
+			line-height: rem(20);
+			padding: rem(5 8);
+			min-width: 2rem;
+			text-align: center;
 			text-decoration: none;
 			border: 1px solid $color-border;
 			background-color: #fff;
@@ -94,6 +99,15 @@
 				border-color: $color-primary;
 			}
 		}
+		.paging-item__select {
+			display: inline-block; 
+			border: none;
+			margin-left: 1rem;
+			vertical-align: top;
+			select {
+				height: 2rem;
+			}
+		}
 	}
 </style>
 <script>
@@ -126,11 +140,18 @@
 				default : 1
 			},
 
-			//分页样式 {number : 数字分页， text: 文字分页}
-			layout : { 
-				type : String,
-				default : 'number'  
+
+			//是否显示pageSize下拉
+			showPageSizes : Boolean,
+
+			//pageSize配置
+			pageSizes : {
+				type : Array,
+				default () {
+					return [10, 20, 50, 100]
+				}
 			},
+
 
 			//配置参数
 			options : Object
@@ -159,8 +180,12 @@
 			go (page) {
 				if (this.index !== page) {
 					this.index = page
-					this.$emit('change', this.index)
+					this.$emit('change', this.index, this.limit)
 				}
+			},
+			limitChange () {
+				this.limit = this.customPageSize
+				this.go(1)
 			}
 		},
 		computed : {
@@ -209,7 +234,11 @@
 				first: 'first',
 				last : 'last',
 				next : 'next',
-				more : '...'}, this.options)
+				more : '...',
+				pager : true
+			}, this.options)
+
+			let customPageSize = this.pageSize 
 
 			return {
 				config,
@@ -217,7 +246,8 @@
 				limit : this.pageSize,
 				size : this.total || 1,
 				showPrevMore : false,
-				showNextMore : false
+				showNextMore : false,
+				customPageSize
 			}
 		},
 		watch : {
