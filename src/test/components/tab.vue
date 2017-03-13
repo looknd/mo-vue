@@ -29,7 +29,7 @@
 			<main class="demo-panel__body">
 				<mo-tabs v-model="activeTab.number">
 					<mo-tab tab="Demo" name="demo">
-						<mo-tabs v-model="demo.demo2">
+						<mo-tabs v-model="demo.demo2" class-name="mo-tabs--card">
 							<mo-tab tab="新闻" name="tab1"></mo-tab>
 							<mo-tab tab="体育" name="tab2"></mo-tab>
 							<mo-tab tab="社会" name="tab3"></mo-tab>
@@ -54,7 +54,7 @@
 			<main class="demo-panel__body">
 				<mo-tabs v-model="activeTab.number">
 					<mo-tab tab="Demo" name="demo">
-						<mo-tabs :is-nav="true">
+						<mo-tabs :is-nav="true" class-name="mo-tabs--nav">
 							<mo-tab-item v-model="demo.demo3" name="tab1" :disabled="true">Tab1</mo-tab-item>
 							<mo-tab-item v-model="demo.demo3" name="tab2">Tab2</mo-tab-item>
 							<mo-tab-item v-model="demo.demo3" name="tab3"><i>Tab3</i></mo-tab-item>

@@ -46,6 +46,47 @@
 				display: none;
 			}
 		}
+
+		&.mo-tabs--nav {
+			.mo-tabs__nav {
+				border: none;
+				background-color: $color-primary;
+				.mo-tab__item {
+					color: #fff;
+					a {
+						color: #fff;
+						text-decoration: none;
+					}
+					&.mo-tab--active {
+						color: #fff;
+						background-color: darken($color-primary, 5%);
+						&:after {
+							display: none;
+						}
+					}
+				}
+			}
+		}
+
+		&.mo-tabs--card {
+			border: 1px solid $color-border;
+			.mo-tabs__nav {
+				background-color: $color-light;
+				.mo-tab__item {
+					border-left: 1px solid $color-border;
+					&:first-child {
+						border-left: none;
+					}
+					&.mo-tab--active {
+						background-color: #fff;
+						&:after {
+							background-color: #fff;
+						}
+					}
+				}
+			}
+		}
+			
 	}
 </style>
 <script>
@@ -58,7 +99,8 @@
 		props : {
 			value : {},
 			activeTab : String,
-			isNav : Boolean 
+			isNav : Boolean,
+			className : [String, Array] //支持空格，英文逗号，数组
 		},
 		data () {
 			return {
@@ -89,13 +131,24 @@
 		},
 		render (h) {
 
+			let className = {
+				'mo-tabs' : true
+			}
+			if (this.className) {
+				let _className = this.className
+				if (typeof _className === 'string') {
+					_className = _className.replace(' ', ',').split(',')
+				}
+				_className.forEach (_class => className[_class] = true)
+			}
+
 			if (this.isNav) {
 				let nav = h('ul', {
 					'class' : 'mo-tabs__nav'
 				}, this.$slots.default)
-				
+
 				return h('div', {
-					'class' : 'mo-tabs',
+					'class' : className,
 				}, [nav])
 			}
 
@@ -115,7 +168,7 @@
 
 
 			return h('div', {
-				'class' : 'mo-tabs',
+				'class' : className,
 			}, [ navs, body ])
 		}
 	}
