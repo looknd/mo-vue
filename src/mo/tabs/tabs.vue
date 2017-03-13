@@ -7,17 +7,13 @@
 			margin: 0 0 1rem;
 			position: relative;
 			user-select: none;
-			ul {
-				margin: 0;
-				padding: 0;
-				display: flex;
-				justify-content: space-between;
-				align-items : center;
-				text-align: center;
-				max-width: 100%;
-				list-style: none;
-				border-bottom: 1px solid $color-border;
-			}
+			display: flex;
+			justify-content: space-between;
+			align-items : center;
+			text-align: center;
+			max-width: 100%;
+			list-style: none;
+			border-bottom: 1px solid $color-border;
 			.mo-tab__item{
 				line-height: rem(24);
 				padding: rem(10);
@@ -53,15 +49,16 @@
 	}
 </style>
 <script>
-	import TabNav from './tab-nav'
+	import MoTabItems from './tab-items'
 	export default {
 		name : 'MoTabs',
 		components : {
-			TabNav
+			MoTabItems
 		},
 		props : {
 			value : {},
-			activeTab : String 
+			activeTab : String,
+			isNav : Boolean 
 		},
 		data () {
 			return {
@@ -92,9 +89,17 @@
 		},
 		render (h) {
 
-			let navs = h('div', {
-				'class' : 'mo-tabs__nav',
-			}, [h(TabNav, {
+			if (this.isNav) {
+				let nav = h('ul', {
+					'class' : 'mo-tabs__nav'
+				}, this.$slots.default)
+				
+				return h('div', {
+					'class' : 'mo-tabs',
+				}, [nav])
+			}
+
+			let navs = h(MoTabItems, {
 				props : {
 					tabs : this.tabs,
 					currentTab : this.currentTab
@@ -102,7 +107,7 @@
 				on : {
 					click : this.tabClickEvent
 				}
-			})])
+			})
 
 			let body = h ('div', {
 				'class' : 'mo-tabs__contents'
@@ -111,10 +116,7 @@
 
 			return h('div', {
 				'class' : 'mo-tabs',
-			}, [
-			navs,
-			body
-			])
+			}, [ navs, body ])
 		}
 	}
 </script>

@@ -44,6 +44,31 @@
 				</mo-tabs>
 			</main>
 		</div>
+
+
+
+			<div class="demo-panel">
+			<header class="demo-panel__header">
+				<h4 class="title">仅nav(使用<code>is-nav</code>属性和<code>MoTabItem</code>组件)</h4>
+			</header>
+			<main class="demo-panel__body">
+				<mo-tabs v-model="activeTab.number">
+					<mo-tab tab="Demo" name="demo">
+						<mo-tabs :is-nav="true">
+							<mo-tab-item v-model="demo.demo3" name="tab1" :disabled="true">Tab1</mo-tab-item>
+							<mo-tab-item v-model="demo.demo3" name="tab2">Tab2</mo-tab-item>
+							<mo-tab-item v-model="demo.demo3" name="tab3"><i>Tab3</i></mo-tab-item>
+							<mo-tab-item v-model="demo.demo3" name="tab4"><a>Tab4</a></mo-tab-item>
+						</mo-tabs>
+					</mo-tab>
+					<mo-tab tab="Code" name="code">
+						<pre-code v-model="code.nav"></pre-code>
+					</mo-tab>
+				</mo-tabs>
+			</main>
+		</div>
+
+
 		<h3 class="demo-title">Api</h3>
 	</div>
 </template>
@@ -51,12 +76,14 @@
 	import PreCode from './pre'
 	import MoTabs from 'mo/tabs/tabs'
 	import MoTab from 'mo/tabs/tab'
+	import MoTabItem from 'mo/tabs/tab-item'
 	import * as code from './code/tabs'
 	export default {
 		components : {
 			PreCode,
 			MoTabs,
-			MoTab
+			MoTab,
+			MoTabItem
 		},
 		data () {
 			return {
@@ -66,7 +93,8 @@
 				},
 				demo : {
 					demo1 : 'tab1',
-					demo2 : 'tab3'
+					demo2 : 'tab3',
+					demo3 : 'tab2'
 				},
 				code
 			}	

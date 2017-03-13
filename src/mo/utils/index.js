@@ -3,7 +3,7 @@
  * @param  {Object} target 目标对象
  * @return {Object}      
  */
-export const extend = Object.assign || function(target = {}) {
+const extend = Object.assign || function(target = {}) {
 	target = Object(target)
 	for (let i = 1, len = arguments.length; i < len; i++) {
 		let source = arguments[i]
@@ -16,4 +16,20 @@ export const extend = Object.assign || function(target = {}) {
 		}
 	}
 	return target
+}
+
+
+const decodeHtml = string => {
+	if (!string) return ''
+	return string.trim().replace(/&(lt|gt|nbsp|amp|quot);/ig, (all, char) => {
+		return {'lt':'<','gt':'>','nbsp':' ','amp':'&','quot':'"'}[char]
+	})	
+}
+
+
+
+
+export {
+	extend,
+	decodeHtml
 }
