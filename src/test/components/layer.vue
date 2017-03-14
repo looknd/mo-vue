@@ -9,7 +9,19 @@
 			<main class="demo-panel__body">
 				<mo-tabs v-model="demo1Tab">
 					<mo-tab tab="Demo" name="demo">
-							<mo-layer></mo-layer>
+							<button class="mo-button" @click="demo1Layer = true">open Layer</button>
+							<mo-layer v-model="demo1Layer" title="MoLayer">
+								<template slot="body">
+									我是个弹出层，我该如何呢？好烦啊<br/>
+									啊啊啊啊
+								</template>
+							</mo-layer>
+							<mo-layer v-model="demo2Layer" title="MoLayer">
+								<template slot="body">
+									我是个弹出层，我该如何呢？好烦啊<br/>
+									啊啊啊啊
+								</template>
+							</mo-layer>
 					</mo-tab>
 					<mo-tab tab="Code" name="code">
 						
@@ -37,7 +49,9 @@
 		},
 		data () {
 			return {
-				demo1Tab : 'demo'
+				demo1Tab : 'demo',
+				demo1Layer : false,
+				demo2Layer : false
 			}	
 		},
 		methods : {

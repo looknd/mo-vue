@@ -1,6 +1,7 @@
 <template>
-	<div class="mo-layer__wrapper" ref="layer" v-show="open">
-			<div class="mo-layer">
+<transition name="layer-fade">
+	<div class="mo-layer__wrapper" ref="layer" v-show="open" :style="styles" @click="overlayClick">
+			<div class="mo-layer" :style="{'margin-top' : top}" @click.stop>
 					<div class="mo-layer__header" ref="title" v-if="(title || $slots && $slots.title)">
 						 <h3 class="mo-layer__title">
 						 		<slot name="title">{{ title }}</slot>
@@ -14,9 +15,11 @@
 					</div>
 			</div>
 	</div>
+</transition>	
 </template>
 <script>
 	import Layer from './layer'
+	import {getZIndex} from './manager'
 	export default {
 		name : 'MoLayer',
 		mixins : [Layer],
@@ -45,15 +48,17 @@
 
 
 			//通过遮罩层关闭
-			closeByOverlay : Boolean,
+			closeByOverlay : Boolean
 
-			//通过esc键关闭
-			closeByEsc : Boolean
 		},
-		data () {
-			return {
-				open : this.value
+		computed : {
+			styles () {
+				return {
+					'z-index' : this.zIndex
+				}
 			}
+		},
+		methods : {
 		},
 		mounted () {
 			console.log(this)
@@ -80,9 +85,11 @@
 			overflow: hidden;
 			margin-top: 15%;
 			position: relative;
+			text-align: left;
 			> .mo-layer__header {
 				padding: rem(20 20 0);
 				line-height: 1;
+				user-select: none;
 			}
 			> .mo-layer__body {
 				padding: rem(30 20);
@@ -90,6 +97,7 @@
 			> .mo-layer__footer {
 				padding: rem(0 20 20);
 				text-align: right;
+				user-select: none;
 			}
 			.mo-layer__title {
 				font-size: rem(20);
@@ -99,4 +107,37 @@
 			}
 		}
 	}
+	.layer-fade-enter-active {
+    animation: dialogFadeIn .26s;
+    .mo-layer {
+    	backface-visibility: hidden;
+    }
+  }
+
+  .layer-fade-leave-active {
+    animation: dialogFadeOut .2s;
+    .mo-layer {
+    	backface-visibility: hidden;
+    }
+  }
+   @keyframes dialogFadeIn {
+    0% {
+      transform: translate3d(0, -20px, 0);
+      opacity: 0;
+    }
+    100% {
+      transform: translate3d(0, 0, 0);
+      opacity: 1;
+    }
+  }
+  @keyframes dialogFadeOut {
+    0% {
+      transform: translate3d(0, 0, 0);
+      opacity: 1;
+    }
+    100% {
+      transform: translate3d(0, -10px, 0);
+      opacity: 0;
+    }
+  }
 </style>
