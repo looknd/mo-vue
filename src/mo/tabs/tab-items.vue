@@ -18,10 +18,10 @@
 			tabClick () {
 				let item
 				for (let i = 0, len = this.items.length; i < len; i++) {
-						if (this.items[i].name == this.activeTab) {
-							item = this.items[i]
-							break
-						}
+					if (this.items[i].name == this.activeTab) {
+						item = this.items[i]
+						break
+					}
 				}
 				if (!item) {
 					item = this.items[0]

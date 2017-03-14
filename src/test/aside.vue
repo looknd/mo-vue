@@ -19,6 +19,9 @@
 						<router-link to="/tabs" tag="li">
 							<a>Tabs</a>
 						</router-link>
+						<router-link to="/layer" tag="li">
+							<a>Layer</a>
+						</router-link>
 					</template>
 				</drop-menu>
 			</ul>

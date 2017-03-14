@@ -21,7 +21,7 @@
 		methods : {
 			tabClick (name) {
 				if (this.disabled) return 
-				this.activeTab = name 
+					this.activeTab = name 
 				this.$emit('input', this.activeTab)
 			}
 		},

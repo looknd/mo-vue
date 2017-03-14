@@ -4,7 +4,7 @@ import Router from 'vue-router'
 import Install from './components/install'
 import Paging from './components/paging'
 import Tab from './components/tab'
-
+import Layer from './components/layer'
 
 
 
@@ -21,6 +21,9 @@ export default new Router({
 	},{
 		path: '/tabs',
 		component: Tab
+	},{
+		path: '/layer',
+		component: Layer
 	}],
 	mode: 'history',
 	linkActiveClass: 'active',

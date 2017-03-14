@@ -47,7 +47,7 @@
 
 
 
-			<div class="demo-panel">
+		<div class="demo-panel">
 			<header class="demo-panel__header">
 				<h4 class="title">仅nav(使用<code>is-nav</code>属性和<code>MoTabItem</code>组件)</h4>
 			</header>
