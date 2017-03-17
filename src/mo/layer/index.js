@@ -1,1 +1,2 @@
-export {default} from './layer'
+export {default} from './layer.js'
+

@@ -1,6 +1,6 @@
 <template>
 	<transition name="overlay-fade">
-		<div class="mo-overlay" v-show="show" :style="styles" @click="click"  @touchmove="prevent"></div>
+		<div class="mo-overlay" v-show="show" :style="styles" @click.stop="click"  @touchmove="prevent"></div>
 	</transition>	
 </template>
 

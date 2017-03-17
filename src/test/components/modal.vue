@@ -10,7 +10,22 @@
 				<mo-tabs v-model="demo1Tab">
 					<mo-tab tab="Demo" name="demo">
 							<button class="mo-button" @click="demo1Layer = true">open Layer</button>
-							
+							<mo-modal v-model="demo1Layer" title="MoLayer">
+								<template slot="body">
+									我是个弹出层，我该如何呢？好烦啊<br/>
+									啊啊啊啊
+								</template>
+								<template slot="buttons">
+									<button class="mo-button" @click="demo1Layer = false">关闭</button>
+									<button class="mo-button--primary" @click="demo2Layer = true">打开第二个弹出层</button>
+								</template>
+							</mo-modal>
+							<mo-modal v-model="demo2Layer" title="MoLayer">
+								<template slot="body">我是第二个弹出层</template>
+								<template slot="buttons">
+									<button class="mo-button" @click="demo2Layer = false">关闭</button>
+								</template>
+							</mo-modal>
 					</mo-tab>
 					<mo-tab tab="Code" name="code">
 						
@@ -25,12 +40,13 @@
 	import PreCode from './pre'
 	import MoTabs from 'mo/tabs/tabs'
 	import MoTab from 'mo/tabs/tab'
-	import MoLayer from 'mo/layer'
+	import MoModal from 'mo/modal/'
 	export default {
 		components : {
 			PreCode,
 			MoTabs,
 			MoTab,
+			MoModal
 		},
 		data () {
 			return {
@@ -41,12 +57,6 @@
 		},
 		methods : {
 			
-		},
-		mounted () {
-			MoLayer.alert('大大大', () => {
-				//MoLayer.close()
-				MoLayer.toast('自动关闭')
-			})
 		}
 	}
 </script>

@@ -1,59 +1,129 @@
+import Vue from 'vue'
+
+import MoLayer from './layer.vue'
+
 import {
-	Manager,
-	getZIndex
-} from './manager'
+	extend
+} from '../utils'
 
-const $body = document.body
 
-export default {
-	props: {
-		value: Boolean,
+const LayerConstructor = Vue.extend(MoLayer)
 
-	},
-	data() {
-		return {
-			open: this.value,
-			overlayZindex: getZIndex(),
-			zIndex: getZIndex()
-		}
-	},
-	methods: {
-		overlayClick () {
-			if (this.closeByOverlay) {
-				this.hide('overlay')
+const noop = () => {}
+
+
+const defaults = {}
+
+let instance
+
+
+
+const createInstance = () => {
+	instance = new LayerConstructor({
+		el: document.createElement('div')
+	})
+	instance.onRemove = () => instance = null
+	document.body.appendChild(instance.$el)
+
+	instance.show = options => {
+		for (let prop in options) {
+			if (options.hasOwnProperty(prop)) {
+				instance[prop] = options[prop]
 			}
-		},
-		hide (from) {
-			Manager.close(this)
-			this.open = false
-			this.$emit('input', false)
-			this.$emit('close', from)
-		},
-	},
-	mounted() {
-		if (this.overlay && this.open) {
-			Manager.open(this)
 		}
-		$body.appendChild(this.$refs.layer)
-	},
-	updated() {
-		if (!this.overlay) {
-			Manager.setZIndex(this)
-		}
-	},
-	beforeDestroy () {
-		Manager.close(this)
-		$body.removeChild(this.$refs.layer)
-	},
-	watch: {
-		value(val, old) {
-			this.open = val
-			if (val === old) return
-				if (val) {
-					Manager.open(this)
-				} else {
-					Manager.close(this)
-				}
-			}
+		instance.visible = true
+		if (instance.autoClose && Number(instance.autoCloseTime) > 0) {
+			instance.onAutoClose()
 		}
 	}
+
+	return instance
+}
+
+
+
+const Layer = options => {
+	if (typeof options === 'string') {
+		options = {
+			contents: options
+		}
+	}
+
+	options = extend({}, defaults, Layer.config || {}, options || {})
+
+
+	instance = instance || createInstance()
+
+	instance.show(options)
+}
+
+
+/**
+ * 全局设置
+ * @param  {Object}
+ */
+Layer.settings = options => Layer.config = options
+
+
+
+Layer.alert = (message, ensure, options) => {
+	if (typeof ensure === 'object') {
+		options = ensure
+		ensure = null
+	}
+	return Layer(extend({}, options || {}, {
+		type: 'alert',
+		content: message,
+		ensure: ensure,
+		ensureButton: true,
+		cancelButton: false,
+		autoClose: false
+	}))
+}
+
+
+Layer.confirm = (message, ensure, cancel, options) => {
+	if (typeof cancel === 'object') {
+		options = cancel
+		cancel = null
+	}
+
+	return Layer(extend({}, options || {}, {
+		type: 'confirm',
+		content: message,
+		ensure: ensure,
+		cancel: cancel,
+		ensureButton: true,
+		cancelButton: true,
+		autoClose: false
+	}))
+}
+
+
+Layer.toast = (message, time, options) => {
+	if (typeof time === 'object') {
+		options = time
+	}
+
+	let autoCloseTime = (typeof time === 'number' && time > 0) ? time : 2000
+
+	return Layer(extend({}, options || {}, {
+		type: 'toast',
+		content: message,
+		ensureButton: false,
+		cancelButton: false,
+		ensure: null,
+		autoClose: true,
+		autoCloseTime
+	}))
+}
+
+
+Layer.close = () => {
+	if (!instance) {
+		return false
+	}
+	instance.onRemove()
+}
+
+export default Layer

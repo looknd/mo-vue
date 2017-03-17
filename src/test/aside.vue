@@ -22,6 +22,9 @@
 						<router-link to="/layer" tag="li">
 							<a>Layer</a>
 						</router-link>
+						<router-link to="/modal" tag="li">
+							<a>Modal</a>
+						</router-link>
 					</template>
 				</drop-menu>
 			</ul>

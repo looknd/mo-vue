@@ -1,35 +1,42 @@
 <template>
-<transition name="layer-fade">
-	<div class="mo-layer__wrapper" ref="layer" v-show="open" :style="styles" @click="overlayClick">
-			<div class="mo-layer" :style="{'margin-top' : top}" @click.stop>
-					<div class="mo-layer__header" ref="title" v-if="(title || $slots && $slots.title)">
-						 <h3 class="mo-layer__title">
-						 		<slot name="title">{{ title }}</slot>
-						 </h3>
-					</div>
-					<div class="mo-layer__body" ref="body">
-						<slot name="body"></slot>
-					</div>
-					<div class="mo-layer__footer" ref="footer" v-if="$slots && $slots.buttons">
-						<slot name="buttons"></slot>
-					</div>
-			</div>
-	</div>
-</transition>	
+	<mo-modal
+	v-model="open"
+	:scrollable="scrollable" 
+	:top="top" 
+	:overlay="overlay" 
+	:overlayBackground="overlayBackground" 
+	:closeByOverlay="closeByOverlay" 
+	:closeByEsc="closeByEsc"
+	@close="onCancel"
+	>
+	<template slot="title" v-if="title">{{title}}</template>
+	<span slot="body" v-html="content"></span>
+	<template slot="buttons" v-if="ensureButton || cancelButton">
+		<button type="button" :class="cancelButtonClass" v-if="cancelButton" @click="onCancel">{{cancelButtonText}}</button>
+		<button type="button" :class="ensureButtonClass" v-if="ensureButton" @click="onEnsure">{{ensureButtonText}}</button>
+	</template>
+</mo-modal>
 </template>
+
 <script>
-	import Layer from './layer'
-	import {getZIndex} from './manager'
+	import MoModal from '../modal/'
 	export default {
-		name : 'MoLayer',
-		mixins : [Layer],
+		components : {
+			MoModal
+		},
 		props : {
+
+			visible : Boolean,
 
 			//打开时是否可滚动页面
 			scrollable : Boolean,
 
-			//标题，也可通过具名slot设置
+			//标题
 			title : String,
+
+			//内容
+			content : String,
+
 
 			//距离顶部位置
 			top : {
@@ -46,98 +53,100 @@
 			//遮罩层背景
 			overlayBackground : String, 
 
-
 			//通过遮罩层关闭
-			closeByOverlay : Boolean
+			closeByOverlay : {
+				type : Boolean,
+				default : true
+			},
 
-		},
-		computed : {
-			styles () {
-				return {
-					'z-index' : this.zIndex
+			//通过esc键关闭
+			closeByEsc : {
+				type : Boolean,
+				default : true
+			},
+
+			ensureButton : {
+				type : Boolean,
+				default : true
+			},
+
+			cancelButton : {
+				type : Boolean,
+				default : true
+			},
+
+			ensureButtonClass : {
+				type : [String, Array],
+				default () {
+					return 'mo-button--primary'
 				}
+			},
+
+			cancelButtonClass : {
+				type : [String, Array],
+				default () {
+					return 'mo-button'
+				}
+			},
+
+			ensureButtonText : {
+				type : String,
+				default : '确定'
+			},
+
+			cancelButtonText : {
+				type : String,
+				default : '取消'
+			},
+
+			ensure : Function,
+
+			cancel : Function,
+
+			autoClose : Boolean,
+
+			autoCloseTime : {
+				type : Number,
+				default : 0
 			}
 		},
-		methods : {
+
+		data () {
+			return {
+				open : this.visible, 
+				_closeTimer : null
+			}
 		},
-		mounted () {
-			console.log(this)
+
+		methods : {
+			onCancel () {
+				(this.cancel && typeof this.cancel === 'function') && this.cancel()
+				this.destroy()
+			},
+			onEnsure () {
+				this.onCancel();
+				(this.ensure && typeof this.ensure === 'function') && this.ensure()
+			},
+			destroy () {
+				this.$destroy()
+				this.onRemove()
+				this._closeTimer && clearTimeout(this._closeTimer)
+			},
+			onAutoClose () {
+				let time = Number(this.autoCloseTime)
+				this._closeTimer = setTimeout(this.onCancel, time)
+			},
+			onRemove () {}
+		},
+
+		beforeDestory () {
+			this.destroy()
+		},
+
+		watch : {
+			visible (val) {
+				this.open = val
+			}
 		}
 	}
 </script>
-<style lang="scss">
-	@import '~scss/import.scss';
-	.mo-layer__wrapper {
-		position: fixed;
-		top: 0;
-		left: 0;
-		right: 0;
-		bottom: 0;
-		z-index: 19900206;
-		text-align: center;
-		> .mo-layer {
-			display: inline-block;
-			background-color: #fff;
-			box-shadow: 0 1px 3px rgba(0,0,0,.3);
-			margin-bottom: 3rem;
-			max-width: 80%;
-			max-height: 80%;
-			overflow: hidden;
-			margin-top: 15%;
-			position: relative;
-			text-align: left;
-			> .mo-layer__header {
-				padding: rem(20 20 0);
-				line-height: 1;
-				user-select: none;
-			}
-			> .mo-layer__body {
-				padding: rem(30 20);
-			}
-			> .mo-layer__footer {
-				padding: rem(0 20 20);
-				text-align: right;
-				user-select: none;
-			}
-			.mo-layer__title {
-				font-size: rem(20);
-				line-height: 1;
-				margin: 0;
-				padding: 0;
-			}
-		}
-	}
-	.layer-fade-enter-active {
-    animation: dialogFadeIn .26s;
-    .mo-layer {
-    	backface-visibility: hidden;
-    }
-  }
-
-  .layer-fade-leave-active {
-    animation: dialogFadeOut .2s;
-    .mo-layer {
-    	backface-visibility: hidden;
-    }
-  }
-   @keyframes dialogFadeIn {
-    0% {
-      transform: translate3d(0, -20px, 0);
-      opacity: 0;
-    }
-    100% {
-      transform: translate3d(0, 0, 0);
-      opacity: 1;
-    }
-  }
-  @keyframes dialogFadeOut {
-    0% {
-      transform: translate3d(0, 0, 0);
-      opacity: 1;
-    }
-    100% {
-      transform: translate3d(0, -10px, 0);
-      opacity: 0;
-    }
-  }
-</style>

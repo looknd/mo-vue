@@ -57,6 +57,9 @@ class ClassList {
 	}
 }
 
+
+//
+
 if (!('classList' in Element.prototype)) {
 	Object.defineProperty(Element.prototype, 'classList', {
 		get: function() {
@@ -64,3 +67,16 @@ if (!('classList' in Element.prototype)) {
 		}
 	})
 }
+
+
+
+/**
+ * 获取元素计算后的样式
+ * @param  {HTMLElement} element
+ * @return {Object}
+ */
+const getComputedStyles = element => element.ownerDocument.defaultView.getComputedStyle(element, null)
+
+
+
+export {getComputedStyles}

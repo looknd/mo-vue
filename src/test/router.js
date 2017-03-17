@@ -5,7 +5,7 @@ import Install from './components/install'
 import Paging from './components/paging'
 import Tab from './components/tab'
 import Layer from './components/layer'
-
+import Modal from './components/modal'
 
 
 
@@ -24,6 +24,9 @@ export default new Router({
 	},{
 		path: '/layer',
 		component: Layer
+	},{
+		path: '/modal',
+		component: Modal
 	}],
 	mode: 'history',
 	linkActiveClass: 'active',
