@@ -151,8 +151,8 @@
 
 		methods : {
 			onCancel () {
-				isFunction(this.cancel) && this.cancel()
 				this.destroy()
+				isFunction(this.cancel) && this.cancel()
 			},
 			onEnsure () {
 				this.onCancel()

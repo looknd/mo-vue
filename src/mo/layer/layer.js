@@ -71,7 +71,6 @@ const Layer = options => {
 
 	options = extend({}, defaults, Layer.config || {}, options || {})
 
-
 	instance = instance || createInstance()
 
 	instance.show(options)

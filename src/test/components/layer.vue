@@ -9,8 +9,16 @@
 			<main class="demo-panel__body">
 				<mo-tabs v-model="demo1Tab">
 					<mo-tab tab="Demo" name="demo">
-							<button class="mo-button" @click="demo1Layer = true">open Layer</button>
+							<button class="mo-button" @click="openLayer">open Layer</button>
 							
+					</mo-tab>
+					<mo-tab tab="Code" name="code">
+						
+					</mo-tab>
+				</mo-tabs>
+				<mo-tabs v-model="demo1Tab">
+					<mo-tab tab="Demo" name="demo">
+							<mo-date min="2017-3-18"></mo-date>
 					</mo-tab>
 					<mo-tab tab="Code" name="code">
 						
@@ -26,11 +34,13 @@
 	import MoTabs from 'mo/tabs/tabs'
 	import MoTab from 'mo/tabs/tab'
 	import MoLayer from 'mo/layer'
+	import MoDate from 'mo/datetime/date'
 	export default {
 		components : {
 			PreCode,
 			MoTabs,
 			MoTab,
+			MoDate
 		},
 		data () {
 			return {
@@ -40,13 +50,13 @@
 			}	
 		},
 		methods : {
-			
+			openLayer () {
+				MoLayer.confirm('您确定删除吗', () => {
+					MoLayer.alert('点击了确定')
+				}, () => {MoLayer.toast('点击了取消，自动关闭')})
+			}
 		},
 		mounted () {
-			MoLayer.alert('大大大', () => {
-				//MoLayer.close()
-				MoLayer.toast('自动关闭')
-			})
 		}
 	}
 </script>
