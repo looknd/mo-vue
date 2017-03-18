@@ -2,7 +2,8 @@
 	<mo-modal
 	v-model="open"
 	:scrollable="scrollable" 
-	:top="top" 
+	:top="top"
+	:classes="classes" 
 	:overlay="overlay" 
 	:overlayBackground="overlayBackground" 
 	:closeByOverlay="closeByOverlay" 
@@ -18,8 +19,41 @@
 </mo-modal>
 </template>
 
+
+<style lang="scss">
+@import '~scss/import.scss';
+	.mo-modal__wrapper {
+		.mo-modal {
+			&.mo-modal--alert {
+				.mo-modal__body {
+					font-size: 1rem;
+				}
+			}
+			&.mo-modal--confirm {
+				.mo-modal__body {
+					font-size: 1rem;
+				}
+			}
+			&.mo-modal--toast {
+				background-color: rgba(#000, .6);
+				color: #fff;
+				border-radius: 2px;
+				min-width: 6rem;
+				width: auto;
+				text-align: center;
+				.mo-modal__body {
+					padding: rem(12 20);
+				}
+			}
+		}
+
+	}
+</style>
+
+
 <script>
 	import MoModal from '../modal/'
+	import {isFunction} from '../utils'
 	export default {
 		components : {
 			MoModal
@@ -27,6 +61,9 @@
 		props : {
 
 			visible : Boolean,
+
+			//额外的样式
+			classes : [String, Array],
 
 			//打开时是否可滚动页面
 			scrollable : Boolean,
@@ -54,16 +91,10 @@
 			overlayBackground : String, 
 
 			//通过遮罩层关闭
-			closeByOverlay : {
-				type : Boolean,
-				default : true
-			},
+			closeByOverlay : Boolean,
 
 			//通过esc键关闭
-			closeByEsc : {
-				type : Boolean,
-				default : true
-			},
+			closeByEsc : Boolean,
 
 			ensureButton : {
 				type : Boolean,
@@ -120,12 +151,14 @@
 
 		methods : {
 			onCancel () {
-				(this.cancel && typeof this.cancel === 'function') && this.cancel()
+				isFunction(this.cancel) && this.cancel()
 				this.destroy()
 			},
 			onEnsure () {
-				this.onCancel();
-				(this.ensure && typeof this.ensure === 'function') && this.ensure()
+				this.onCancel()
+				if (isFunction(this.ensure)) {
+					this.ensure()
+				}
 			},
 			destroy () {
 				this.$destroy()

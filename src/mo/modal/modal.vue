@@ -1,7 +1,7 @@
 <template>
 	<transition name="modal-fade">
-		<div class="mo-modal__wrapper" ref="modal" v-show="visible" :style="styles" @click="overlayClick">
-			<div class="mo-modal" :style="{'margin-top' : top}" @click.stop>
+		<div class="mo-modal__wrapper" :style="styles" ref="modal" v-show="visible" @click="overlayClick">
+			<div class="mo-modal" :class="classes" :style="{'margin-top' : top}" @click.stop>
 				<div class="mo-modal__header" ref="title" v-if="(title || $slots && $slots.title)">
 					<h3 class="mo-modal__title">
 						<slot name="title">{{ title }}</slot>
@@ -35,6 +35,7 @@
 			background-color: #fff;
 			box-shadow: 0 1px 3px rgba(0,0,0,.3);
 			margin-bottom: 3rem;
+			min-width: 420px;
 			max-width: 80%;
 			max-height: 80%;
 			overflow: hidden;
@@ -96,6 +97,18 @@
 			opacity: 0;
 		}
 	}
+	
+	@media screen and (max-width: 768px) {
+		.mo-modal__wrapper {
+			.mo-modal {
+				min-width: auto;
+				width: 80%;
+			}
+		}
+	}
+	
+
+
 </style>
 <script>
 	import Modal from './modal.js'
@@ -129,8 +142,10 @@
 			closeByOverlay : Boolean,
 
 			//通过esc键关闭
-			closeByEsc : Boolean
+			closeByEsc : Boolean,
 
+			//额外的样式
+			classes : [String, Array]
 		},
 		computed : {
 			styles () {

@@ -12,7 +12,27 @@ const LayerConstructor = Vue.extend(MoLayer)
 const noop = () => {}
 
 
-const defaults = {}
+const defaults = {
+	visible: false,
+	classes: null,
+	scrollable: false,
+	title : null,
+	content : null,
+	overlay : true,
+	closeByOverlay : false,
+	closeByEsc : false,
+	ensureButton : true,
+	cancelButton : true,
+	ensure : null,
+	cancel : null,
+	autoClose : false,
+	autoCloseTime: 0,
+	ensureButtonClass : 'mo-button--primary',
+	cancelButtonClass : 'mo-button',
+	ensureButtonText : '确定',
+	cancelButtonText : '取消'
+
+}
 
 let instance
 
@@ -71,14 +91,16 @@ Layer.alert = (message, ensure, options) => {
 		options = ensure
 		ensure = null
 	}
-	return Layer(extend({}, options || {}, {
+
+	return Layer(extend({}, {
 		type: 'alert',
+		classes : 'mo-modal--alert',
 		content: message,
 		ensure: ensure,
 		ensureButton: true,
 		cancelButton: false,
 		autoClose: false
-	}))
+	}, options || {}))
 }
 
 
@@ -88,15 +110,16 @@ Layer.confirm = (message, ensure, cancel, options) => {
 		cancel = null
 	}
 
-	return Layer(extend({}, options || {}, {
+	return Layer(extend({}, {
 		type: 'confirm',
+		classes : 'mo-modal--confirm',
 		content: message,
 		ensure: ensure,
 		cancel: cancel,
 		ensureButton: true,
 		cancelButton: true,
 		autoClose: false
-	}))
+	}, options || {}))
 }
 
 
@@ -107,16 +130,24 @@ Layer.toast = (message, time, options) => {
 
 	let autoCloseTime = (typeof time === 'number' && time > 0) ? time : 2000
 
-	return Layer(extend({}, options || {}, {
+	return Layer(extend({}, {
 		type: 'toast',
+		classes : 'mo-modal--toast',
 		content: message,
 		ensureButton: false,
 		cancelButton: false,
 		ensure: null,
 		autoClose: true,
-		autoCloseTime
-	}))
+		autoCloseTime,
+		overlay: false
+	}, options || {}))
 }
+
+
+Layer.loading = (message, time, options) => {
+	
+}
+
 
 
 Layer.close = () => {

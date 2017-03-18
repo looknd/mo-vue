@@ -83,9 +83,10 @@ export default {
 
 	watch: {
 		value(val, old) {
-			if (val === old) return
-				val ? this.open() : this.close()
+			if (val === old) {
+				return
+			}
+			val ? this.open() : this.close()
 		}
 	}
-
 }

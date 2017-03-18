@@ -1,3 +1,13 @@
+const isObject = obj => obj !== null && typeof obj === 'object'
+
+const isPlainObject = obj => Object.prototype.toString.call(obj) === '[object Object]'
+
+const isFunction = obj => typeof obj === 'function'
+
+
+
+
+
 /**
  * 拷贝源对象到目标对象
  * @param  {Object} target 目标对象
@@ -22,14 +32,22 @@ const extend = Object.assign || function(target = {}) {
 const decodeHtml = string => {
 	if (!string) return ''
 	return string.trim().replace(/&(lt|gt|nbsp|amp|quot);/ig, (all, char) => {
-		return {'lt':'<','gt':'>','nbsp':' ','amp':'&','quot':'"'}[char]
-	})	
+		return {
+			'lt': '<',
+			'gt': '>',
+			'nbsp': ' ',
+			'amp': '&',
+			'quot': '"'
+		}[char]
+	})
 }
 
 
 
-
 export {
+	isObject,
+	isPlainObject,
+	isFunction,
 	extend,
 	decodeHtml
 }
