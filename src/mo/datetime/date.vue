@@ -61,9 +61,7 @@
 			<div class="mo-date__scroller" :style="translate">
 				<div class="body-panel body-panel__flex">
 					<ul class="body-panel__cells">
-						<li class="body-panel__cell" :class="{'panel-cell--active' : n === month}" v-for="n in 12" @click="chooseMonth(n)">
-							{{n}}月
-						</li>
+						<li class="body-panel__cell" :class="{'panel-cell--active' : n === month}" v-for="n in 12" @click="chooseMonth(n)">{{n}}月</li>
 					</ul>
 				</div>
 				<div class="body-panel">
@@ -73,15 +71,17 @@
 					<ul class="mo-days">
 						<li class="mo-day" 
 						v-for="d in days" 
-						:class="{'mo-day--available' : d.inCurrentMonth, 'mo-day--today' : d.isToday, 'mo-day--active' : d.isCurrent, 'mo-day--disabled' : d.isDisabled}" @click="dateChange(d)">{{d.day}}</li>
+						:class="{'mo-day--available' : d.inCurrentMonth && !d.isDisabled, 
+							'mo-day--today' : d.isToday, 
+							'mo-day--active' : d.isCurrent, 
+							'mo-day--disabled' : d.isDisabled}" 
+							@click="dateChange(d)">{{d.day}}</li>
 					</ul>
 				</div>
 				<div class="body-panel body-panel__flex">
 					<ul class="body-panel__cells">
 						<li class="body-panel__cell" @click="chooseYear(tenYear - 1)">{{tenYear - 1}}</li>
-						<li class="body-panel__cell" :class="{'panel-cell--active' : tenYear + n - 1 === year}" v-for="n in 10" @click="chooseYear(tenYear + n - 1)">
-							{{tenYear + n - 1}}
-						</li>
+						<li class="body-panel__cell" :class="{'panel-cell--active' : tenYear + n - 1 === year}" v-for="n in 10" @click="chooseYear(tenYear + n - 1)" v-text="(tenYear + n - 1)"></li>
 						<li class="body-panel__cell" @click="chooseYear(tenYear + 10)">{{tenYear + 10}}</li>
 					</ul>
 				</div>
@@ -217,6 +217,9 @@
 						color: $color-placeholder!important;
 						cursor: default;
 						background-color: transparent!important;
+						&:hover {
+							text-decoration: line-through;
+						}
 					}
 				}
 				&.mo-week {					
