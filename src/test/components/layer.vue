@@ -50,7 +50,7 @@
 				demo1Tab : 'demo',
 				demo1Layer : false,
 				demo2Layer : false,
-				time : '23:59'
+				time : new Date()
 			}	
 		},
 		methods : {

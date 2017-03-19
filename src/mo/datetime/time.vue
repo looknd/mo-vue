@@ -1,13 +1,9 @@
 <template>
 	<div class="mo-time">
 		<div class="mo-time__body">
-			<template v-if="fields.h">
-				<label class="time-field"><input type="text" v-model.number="hour" class="mo-input--small" @change="change('hour')" maxlength="2">时</label>
-			</template>
-			<template v-if="fields.m">
-				<label class="time-field"><input type="text" v-model.number="minute" class="mo-input--small" @change="change('minute')" maxlength="2">分</label>
-			</template>
-			<template v-if="fields.s">
+			<label class="time-field"><input type="text" v-model.number="hour" class="mo-input--small" @change="change('hour')" maxlength="2">时</label>
+			<label class="time-field"><input type="text" v-model.number="minute" class="mo-input--small" @change="change('minute')" maxlength="2">分</label>
+			<template v-if="showSecond">
 				<label class="time-field"><input type="text" v-model.number="second" class="mo-input--small" @change="change('second')" maxlength="2">秒</label>
 			</template>
 		</div>
@@ -47,8 +43,9 @@
 
 </style>
 <script>
-	import {dateToMap, formatDate} from '../utils/date'
-	const FormatReg = /^(h{1,2}(\:)?)?(m{1,2}(\:)?)?(s{1,2})?$/
+	import {convertDate,dateToMap, formatDate} from '../utils/date'
+	const FormatReg = /^(h{1,2}.?)?(m{1,2}.?)?(s{1,2}.?)?$/
+	const TimeReg = /^((\d{1,2}).?)?((\d{1,2}).?)?((\d{1,2}).?)?$/
 	export default {
 		name : 'MoTime',
 		props : {
@@ -57,27 +54,23 @@
 				type : String,
 				default : 'hh:mm:ss'
 			},
+			showSecond : {
+				type : Boolean,
+				default : true
+			},
+			min : String,
+			max : String
 		},
 		data () {
-			let fields = {h: true, m : true, s: true}
-			if (this.format) {
-				let match = this.format.match(FormatReg)
-				if (match) {
-					fields['h'] = !!match[1]
-					fields['m'] = !!match[3]
-					fields['s'] = !!match[5]
-				}
-			}
-
 			return {
-				fields,
 				hour : '',
 				minute : '',
-				second : ''
+				second : '',
 			}
 		},
 		methods : {
 			initData (val) {
+
 				if (val instanceof Date) {
 					let map = dateToMap(val)
 					this.hour = map.h
@@ -98,20 +91,54 @@
 						}
 					}
 				}
+
+				this.validate()
+			},
+			validate () {
+				let min, max, time, minMap, maxMap 
+				if (this.min && TimeReg.test(this.min)) {
+					min = convertDate(`1990-01-01 ${this.min}`) * 1
+					minMap = dateToMap(min)
+				}
+				if (this.max && TimeReg.test(this.max)) {
+					max = convertDate(`1990-01-01 ${this.max}`) * 1
+					maxMap = dateToMap(max)
+				}
+
+				let hour = this.hour || '00'
+				let minute = this.minute || '00'
+				let second = this.second || '00'
+
+				time = convertDate(`1990-01-01 ${hour}:${minute}:${second}`) * 1
+				if (min && time < min) {
+					this.hour = minMap.h
+					this.minute = minMap.m
+					this.second = minMap.s
+				}
+
+				if (max && time > max) {
+					this.hour = maxMap.h
+					this.minute = maxMap.m
+					this.second = maxMap.s
+				}
 			},
 			change (key) {
 				let value = this[key]
 				if (isNaN(value) || value < 0 || (key == 'hour' && value >= 24) || value >= 60) {
 					this[key] = ''
 				}
-				let hour = this['hour'] || '00'
-				let minute = this['minute'] || '00'
+				this.validate()
+				let hour = this['hour']
+				let minute = this['minute']
 				let second = this['second'] || '00'
-
+				if (hour == '' || minute == '') {
+					return
+				}
 				let date = `1900-01-01 ${hour}:${minute}:${second}`
 				let format = FormatReg.test(this.format) ? this.format : 'hh:mm:ss'
 				let time = formatDate(date, format)
-				this.$emit('input', time)				
+				this.$emit('input', time)
+				this.$emit('timeChange', time)			
 			}
 		},
 		mounted () {
@@ -120,10 +147,22 @@
 		watch : {
 			value (val, oldVal) {
 				if (val === oldVal) {
-						return
+					return
 				}
 				this.initData(val) 
-			}
+			},
+			min (val, oldVal) {
+				if (val === oldVal) {
+					return
+				}
+				this.validate()
+			},
+			max (val, oldVal) {
+				if (val === oldVal) {
+					return
+				}
+				this.validate()
+			},
 		}
 	}
 </script>
