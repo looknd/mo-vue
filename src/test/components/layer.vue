@@ -20,6 +20,7 @@
 					<mo-tab tab="Demo" name="demo">
 							<mo-date min="2017-3-18" max="2017-3-28"></mo-date>
 							<mo-time format="hh:mm" v-model="time"></mo-time>
+							<mo-input-number :min="0" :max="10"></mo-input-number>
 					</mo-tab>
 					<mo-tab tab="Code" name="code">
 						
@@ -37,13 +38,15 @@
 	import MoLayer from 'mo/layer'
 	import MoDate from 'mo/datetime/date'
 	import MoTime from 'mo/datetime/time'
+	import MoInputNumber from 'mo/input-number/main'
 	export default {
 		components : {
 			PreCode,
 			MoTabs,
 			MoTab,
 			MoDate,
-			MoTime
+			MoTime,
+			MoInputNumber
 		},
 		data () {
 			return {

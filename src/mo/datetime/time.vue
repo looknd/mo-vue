@@ -3,9 +3,7 @@
 		<div class="mo-time__body">
 			<label class="time-field"><input type="text" v-model.number="hour" class="mo-input--small" @change="change('hour')" maxlength="2">时</label>
 			<label class="time-field"><input type="text" v-model.number="minute" class="mo-input--small" @change="change('minute')" maxlength="2">分</label>
-			<template v-if="showSecond">
-				<label class="time-field"><input type="text" v-model.number="second" class="mo-input--small" @change="change('second')" maxlength="2">秒</label>
-			</template>
+			<label class="time-field" v-if="showSecond"><input type="text" v-model.number="second" class="mo-input--small" @change="change('second')" maxlength="2">秒</label>
 		</div>
 	</div>
 </template>
@@ -69,8 +67,8 @@
 			}
 		},
 		methods : {
+			
 			initData (val) {
-
 				if (val instanceof Date) {
 					let map = dateToMap(val)
 					this.hour = map.h
@@ -94,6 +92,7 @@
 
 				this.validate()
 			},
+
 			validate () {
 				let min, max, time, minMap, maxMap 
 				if (this.min && TimeReg.test(this.min)) {
@@ -122,6 +121,7 @@
 					this.second = maxMap.s
 				}
 			},
+
 			change (key) {
 				let value = this[key]
 				if (isNaN(value) || value < 0 || (key == 'hour' && value >= 24) || value >= 60) {
@@ -141,9 +141,11 @@
 				this.$emit('timeChange', time)			
 			}
 		},
+
 		mounted () {
 			this.initData(this.value)
 		},
+
 		watch : {
 			value (val, oldVal) {
 				if (val === oldVal) {
