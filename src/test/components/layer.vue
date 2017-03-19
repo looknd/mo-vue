@@ -18,7 +18,8 @@
 				</mo-tabs>
 				<mo-tabs v-model="demo1Tab">
 					<mo-tab tab="Demo" name="demo">
-							<mo-date min="2017-3-18"></mo-date>
+							<mo-date min="2017-3-18" max="2017-3-28"></mo-date>
+							<mo-time format="hh:mm" v-model="time"></mo-time>
 					</mo-tab>
 					<mo-tab tab="Code" name="code">
 						
@@ -35,18 +36,21 @@
 	import MoTab from 'mo/tabs/tab'
 	import MoLayer from 'mo/layer'
 	import MoDate from 'mo/datetime/date'
+	import MoTime from 'mo/datetime/time'
 	export default {
 		components : {
 			PreCode,
 			MoTabs,
 			MoTab,
-			MoDate
+			MoDate,
+			MoTime
 		},
 		data () {
 			return {
 				demo1Tab : 'demo',
 				demo1Layer : false,
-				demo2Layer : false
+				demo2Layer : false,
+				time : '23:59'
 			}	
 		},
 		methods : {

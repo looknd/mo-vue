@@ -1,88 +1,110 @@
 <template>
 	<div class="mo-date">
 		<div class="mo-date__header">
+			<template v-if="onlyYear">
+				<div class="header-panel">
+					<div class="panel-select panel-select__fluid">
+						<a class="select-button select-button__prev" :class="{'select-button__disabled' : tenYear < startYear + 10}" @click="prevTenYear">
+							<i class="mo-icon__arrow_left"></i>
+						</a>
+						<span class="select-button select-button__label">{{tenYear}}s</span>
+						<a class="select-button select-button__next" :class="{'select-button__disabled' : tenYear > endYear - 10}" @click="nextTenYear">
+							<i class="mo-icon__arrow_right"></i>
+						</a>
+					</div>
+				</div>
+			</template>
+			<template v-else>
+				<template v-if="onlyMonth">
+					<div class="panel-select panel-select__fluid">
+						<span class="select-button select-button__label">{{month}}月</span>
+					</div>
+				</template>
+				<template v-else>
+					<div class="header-panel" v-show="panel == 'day'">
+						<div class="panel-select">
+							<a class="select-button select-button__prev" :class="{'select-button__disabled' : (year === startYear && month === 1)}" @click="prevMonth">
+								<i class="mo-icon__arrow_left"></i>
+							</a>
+							<a class="select-button select-button__label" @click="togglePanel('month')">{{month}}月</a>
+							<a class="select-button select-button__next" :class="{'select-button__disabled' : (year === endYear && month === 12)}" @click="nextMonth">
+								<i class="mo-icon__arrow_right"></i>
+							</a>
+						</div>
+						<div class="panel-select">
+							<a class="select-button select-button__prev" :class="{'select-button__disabled' : year === startYear}" @click="prevYear">
+								<i class="mo-icon__arrow_left"></i>
+							</a>
+							<a class="select-button select-button__label" @click="togglePanel('year')">{{year}}</a>
+							<a class="select-button select-button__next" :class="{'select-button__disabled' : year === endYear}" @click="nextYear">
+								<i class="mo-icon__arrow_right"></i>
+							</a>
+						</div>
+					</div>
 
-			<div class="header-panel" v-show="panel == 'day'">
-				<div class="panel-select">
-					<a class="select-button select-button__prev" :class="{'select-button__disabled' : (year === startYear && month === 1)}" @click="prevMonth">
-						<i class="mo-icon__arrow_left"></i>
-					</a>
-					<a class="select-button select-button__label" @click="togglePanel('month')">{{month}}月</a>
-					<a class="select-button select-button__next" :class="{'select-button__disabled' : (year === endYear && month === 12)}" @click="nextMonth">
-						<i class="mo-icon__arrow_right"></i>
-					</a>
-				</div>
-				<div class="panel-select">
-					<a class="select-button select-button__prev" :class="{'select-button__disabled' : year === startYear}" @click="prevYear">
-						<i class="mo-icon__arrow_left"></i>
-					</a>
-					<a class="select-button select-button__label" @click="togglePanel('year')">{{year}}</a>
-					<a class="select-button select-button__next" :class="{'select-button__disabled' : year === endYear}" @click="nextYear">
-						<i class="mo-icon__arrow_right"></i>
-					</a>
-				</div>
-			</div>
+					<div class="header-panel" v-show="panel == 'month'">
+						<div class="panel-select" @click="togglePanel('day')">
+							<a class="select-button select-button__prev">
+								<i class="mo-icon__arrow_left"></i>
+							</a>
+							<a class="select-button select-button__label" style="text-align: left">{{month}}月</a>
+						</div>
+						<div class="panel-select" @click="togglePanel('year')">
+							<a class="select-button select-button__label" style="text-align: right">{{year}}</a>
+							<a class="select-button select-button__next">
+								<i class="mo-icon__arrow_right"></i>
+							</a>
+						</div>
+					</div>
 
-			<div class="header-panel" v-show="panel == 'month'">
-				<div class="panel-select" @click="togglePanel('day')">
-					<a class="select-button select-button__prev">
-						<i class="mo-icon__arrow_left"></i>
-					</a>
-					<a class="select-button select-button__label" style="text-align: left">{{month}}月</a>
-				</div>
-				<div class="panel-select" @click="togglePanel('year')">
-					<a class="select-button select-button__label" style="text-align: right">{{year}}</a>
-					<a class="select-button select-button__next">
-						<i class="mo-icon__arrow_right"></i>
-					</a>
-				</div>
-			</div>
-
-			<div class="header-panel" v-show="panel == 'year'">
-				<div class="panel-select" @click="togglePanel('day')">
-					<a class="select-button select-button__prev">
-						<i class="mo-icon__arrow_left"></i>
-					</a>
-					<a class="select-button select-button__label" style="text-align: left">{{year}}</a>
-				</div>
-				<div class="panel-select">
-					<a class="select-button select-button__prev" :class="{'select-button__disabled' : tenYear < startYear + 10}" @click="prevTenYear">
-						<i class="mo-icon__arrow_left"></i>
-					</a>
-					<span class="select-button select-button__label">{{tenYear}}s</span>
-					<a class="select-button select-button__next" :class="{'select-button__disabled' : tenYear > endYear - 10}" @click="nextTenYear">
-						<i class="mo-icon__arrow_right"></i>
-					</a>
-				</div>
-			</div>
-
+					<div class="header-panel" v-show="panel == 'year'">
+						<div class="panel-select" @click="togglePanel('day')">
+							<a class="select-button select-button__prev">
+								<i class="mo-icon__arrow_left"></i>
+							</a>
+							<a class="select-button select-button__label" style="text-align: left">{{year}}</a>
+						</div>
+						<div class="panel-select">
+							<a class="select-button select-button__prev" :class="{'select-button__disabled' : tenYear < startYear + 10}" @click="prevTenYear">
+								<i class="mo-icon__arrow_left"></i>
+							</a>
+							<span class="select-button select-button__label">{{tenYear}}s</span>
+							<a class="select-button select-button__next" :class="{'select-button__disabled' : tenYear > endYear - 10}" @click="nextTenYear">
+								<i class="mo-icon__arrow_right"></i>
+							</a>
+						</div>
+					</div>
+				</template>
+			</template>
 		</div>
 		<div class="mo-date__body">
 			<div class="mo-date__scroller" :style="translate">
 				<div class="body-panel body-panel__flex">
-					<ul class="body-panel__cells">
+					<ul class="body-panel__cells" v-if="!onlyYear">
 						<li class="body-panel__cell" :class="{'panel-cell--active' : n === month}" v-for="n in 12" @click="chooseMonth(n)">{{n}}月</li>
 					</ul>
 				</div>
 				<div class="body-panel">
-					<ul class="mo-days mo-week">
+					<template v-if="!onlyYear && !onlyMonth">
+						<ul class="mo-days mo-week">
 						<li class="mo-day" v-for="week in weeks">{{week}}</li>
 					</ul>
 					<ul class="mo-days">
 						<li class="mo-day" 
 						v-for="d in days" 
 						:class="{'mo-day--available' : d.inCurrentMonth && !d.isDisabled, 
-							'mo-day--today' : d.isToday, 
-							'mo-day--active' : d.isCurrent, 
-							'mo-day--disabled' : d.isDisabled}" 
-							@click="dateChange(d)">{{d.day}}</li>
+						'mo-day--today' : d.isToday, 
+						'mo-day--active' : d.isCurrent, 
+						'mo-day--disabled' : d.isDisabled}" 
+						@click="dateChange(d)">{{d.day}}</li>
 					</ul>
+					</template>
 				</div>
 				<div class="body-panel body-panel__flex">
-					<ul class="body-panel__cells">
-						<li class="body-panel__cell" @click="chooseYear(tenYear - 1)">{{tenYear - 1}}</li>
+					<ul class="body-panel__cells" v-if="!onlyMonth">
+						<li class="body-panel__cell" :class="{'panel-cell--active' : tenYear - 1 === year}" @click="chooseYear(tenYear - 1)">{{tenYear - 1}}</li>
 						<li class="body-panel__cell" :class="{'panel-cell--active' : tenYear + n - 1 === year}" v-for="n in 10" @click="chooseYear(tenYear + n - 1)" v-text="(tenYear + n - 1)"></li>
-						<li class="body-panel__cell" @click="chooseYear(tenYear + 10)">{{tenYear + 10}}</li>
+						<li class="body-panel__cell" :class="{'panel-cell--active' : tenYear + 10 === year}" @click="chooseYear(tenYear + 10)">{{tenYear + 10}}</li>
 					</ul>
 				</div>
 			</div>
@@ -93,10 +115,10 @@
 <style lang="scss">
 	@import '~scss/import.scss';
 	.mo-date {
-		width: rem(252);
+		width: rem(262);
 		border: 1px solid $color-border;
 		overflow: hidden;
-		background-color: rgba(#fff, .9);
+		background-color: #fff;
 		user-select: none;
 		.mo-date__header {
 			height: 3rem;
@@ -110,7 +132,7 @@
 			.panel-select{
 				flex: 1 1 auto;
 				width: 50%;
-				margin: 0 .5rem;
+				padding: 0 .5rem;
 				display: flex;
 				flex-flow : row;
 				&.panel-select__fluid {
@@ -196,8 +218,8 @@
 							background-color: $color-lighter;
 						}
 					}
-					&.mo-day--today,&.mo-day--today:hover,&.mo-day--today.mo-day--active {
-						color: $color-positive;
+					&.mo-day--today,&.mo-day--today:hover,&.mo-day--today.mo-day--active,&.mo-day--today.mo-day--disabled {
+						color: $color-positive!important;
 					}
 					&.mo-day--active {
 						color: $color-primary;
@@ -217,9 +239,6 @@
 						color: $color-placeholder!important;
 						cursor: default;
 						background-color: transparent!important;
-						&:hover {
-							text-decoration: line-through;
-						}
 					}
 				}
 				&.mo-week {					
@@ -290,17 +309,26 @@
 			format : {
 				type : String,
 				default : 'yy-MM-dd'
-			}
+			},
+			onlyMonth : Boolean,
+			onlyYear : Boolean
 		},
 		data () {
 			let todayMap = dateToMap(new Date())
 			let map = this.initDateMap()
 			let year = map.year 
 			let tenYear = Number(String(year).replace(/\d$/, '0'))
+			let panel = 'day'
+			if (this.onlyYear) {
+				panel = 'year'
+			} 
+			if (this.onlyMonth) {
+				panel = 'month'
+			}
 			return {
 				date : this.getCurrentDate(),
 				todayMap,
-				panel : 'day',
+				panel,
 				tenYear,
 				minDate : this.isDate(this.min) ? convertDate(this.min) : null,
 				maxDate : this.isDate(this.max) ? convertDate(this.max) : null,
@@ -359,8 +387,6 @@
 					nextYear = year + 1
 				}
 
-
-
 				//上月部分
 				for (i = 1 ; i < firstDay + 1; i++) {
 					let date = {
@@ -373,7 +399,6 @@
 					date.isDisabled = this.isDisabledDate(date)
 					array.push(date)
 				}
-
 
 				//当月
 				for (i = 1; i < days + 1; i++) {
@@ -420,12 +445,18 @@
 
 			chooseMonth (month) {
 				this.month = month
-				this.panel = 'day'
+				if (!this.onlyMonth) {
+					this.panel = 'day'
+				}
 			},
 
 			chooseYear (year) {
 				this.year = year
-				this.panel = 'day'
+				if (!this.onlyYear) {
+					this.panel = 'day'
+				} else {
+					//todo
+				}
 			},
 
 			dateChange (dateMap) {
