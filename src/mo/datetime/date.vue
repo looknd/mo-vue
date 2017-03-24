@@ -115,7 +115,7 @@
 <style lang="scss">
 	@import '~scss/import.scss';
 	.mo-date {
-		width: rem(262);
+		width: rem(292);
 		border: 1px solid $color-border;
 		overflow: hidden;
 		background-color: #fff;
@@ -465,6 +465,8 @@
 				}
 				let date = `${dateMap.year}-${dateMap.month}-${dateMap.day}`
 				this.date = formatDate(date, this.format)
+				this.$emit('input', this.date)
+				this.$emit('change', this.date)
 			},
 
 			/**
@@ -520,14 +522,15 @@
 			 	return new Date(this.year, this.month - 1, 1).getDay()
 			 },
 
-			 getCurrentDate (date) {
+			 getCurrentDate () {
+			 	let date = this.date || this.value
 			 	return this.isDate(date) ? date : ''
 			 },
 
 			 initDateMap () {
 			 	let date = this.date || this.value
 			 	let map
-			 	if (date) {
+			 	if (this.isDate(date)) {
 			 		map = dateToMap(date)
 			 	} else {
 			 		map = dateToMap(new Date()) 
@@ -588,10 +591,6 @@
 			 }
 
 			},
-			mounted () {
-
-			},
-
 			watch : {
 				value (val, oldVal) {
 					if (val === oldVal) {

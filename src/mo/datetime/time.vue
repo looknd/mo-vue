@@ -1,9 +1,12 @@
 <template>
 	<div class="mo-time">
 		<div class="mo-time__body">
-			<label class="time-field"><input type="text" v-model.number="hour" class="mo-input--small" @change="change('hour')" maxlength="2">时</label>
-			<label class="time-field"><input type="text" v-model.number="minute" class="mo-input--small" @change="change('minute')" maxlength="2">分</label>
-			<label class="time-field" v-if="showSecond"><input type="text" v-model.number="second" class="mo-input--small" @change="change('second')" maxlength="2">秒</label>
+			<div class="time-field">
+			<mo-input-number v-model="hour" maxlength="2" size="small" width="56px" min="0" max="23"></mo-input-number>时</div>
+			<div class="time-field">
+			<mo-input-number v-model="minute" maxlength="2" size="small" width="56px" min="0" max="59"></mo-input-number>分</div>
+			<div class="time-field" v-if="showSecond">
+			<mo-input-number v-model="second" maxlength="2" size="small" width="56px" min="0" max="59"></mo-input-number>秒</div>
 		</div>
 	</div>
 </template>
@@ -11,7 +14,7 @@
 <style lang="scss">
 	@import '~scss/import.scss'; 
 	.mo-time {
-		width: rem(262);
+		width: rem(292);
 		height: 3rem;
 		border: 1px solid $color-border;
 		overflow: hidden;
@@ -25,11 +28,12 @@
 				display: inline-block;
 				margin-bottom: 0;
 				font-size: rem(14);
-				input {
-					text-align: center;
-					max-width: 3rem;
-					margin: rem(0 5);
-					padding: .25rem;
+				.mo-number-input {
+					margin: 0 .25rem; 
+					input{
+						padding-left: .25rem;
+						text-align: center;
+					}
 				}
 				
 				&:first-child input{
@@ -42,10 +46,12 @@
 </style>
 <script>
 	import {convertDate,dateToMap, formatDate} from '../utils/date'
+	import MoInputNumber from '../input-number'
 	const FormatReg = /^(h{1,2}.?)?(m{1,2}.?)?(s{1,2}.?)?$/
 	const TimeReg = /^((\d{1,2}).?)?((\d{1,2}).?)?((\d{1,2}).?)?$/
 	export default {
 		name : 'MoTime',
+		components : {MoInputNumber},
 		props : {
 			value : [String, Date],
 			format : {
@@ -67,7 +73,7 @@
 			}
 		},
 		methods : {
-			
+
 			initData (val) {
 				if (val instanceof Date) {
 					let map = dateToMap(val)
@@ -138,7 +144,7 @@
 				let format = FormatReg.test(this.format) ? this.format : 'hh:mm:ss'
 				let time = formatDate(date, format)
 				this.$emit('input', time)
-				this.$emit('timeChange', time)			
+				this.$emit('change', time)			
 			}
 		},
 
@@ -165,6 +171,16 @@
 				}
 				this.validate()
 			},
+			hour (val) {
+				this.hour = val
+				this.change('hour')
+			},
+			minute (val) {
+				this.change('minute')
+			},
+			second(val) {
+				this.change('second')
+			}
 		}
 	}
 </script>

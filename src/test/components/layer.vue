@@ -18,9 +18,10 @@
 				</mo-tabs>
 				<mo-tabs v-model="demo1Tab">
 					<mo-tab tab="Demo" name="demo">
-							<mo-date min="2017-3-18" max="2017-3-28"></mo-date>
-							<mo-time format="hh:mm" v-model="time"></mo-time>
-							<mo-input-number :min="0" :max="10"></mo-input-number>
+						<!-- 	<mo-date min="2017-3-18" max="2017-3-28"></mo-date>
+						<mo-time format="hh:mm" v-model="time"></mo-time> -->
+							<!-- <mo-input-number :min="0" :max="10" size="small" width="60px"></mo-input-number> -->
+							<mo-date-picker v-model="time"></mo-date-picker>
 					</mo-tab>
 					<mo-tab tab="Code" name="code">
 						
@@ -39,6 +40,7 @@
 	import MoDate from 'mo/datetime/date'
 	import MoTime from 'mo/datetime/time'
 	import MoInputNumber from 'mo/input-number/main'
+	import MoDatePicker from 'mo/datetime/date-picker'
 	export default {
 		components : {
 			PreCode,
@@ -46,6 +48,7 @@
 			MoTab,
 			MoDate,
 			MoTime,
+			MoDatePicker,
 			MoInputNumber
 		},
 		data () {
