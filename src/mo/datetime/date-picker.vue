@@ -7,7 +7,7 @@
 			<mo-date v-model="dateTime" @change="dayChange"></mo-date>
 			<mo-time v-model="dateTime" @change="timeChange"></mo-time>
 			<div class="picker-panel__actions mo-clearfix">
-				<a class="mo-button--small mo-button--link mo-left">今天</a>
+				<a class="mo-button--small mo-button--link mo-left" @click.stop="today">今天</a>
 				<div class="mo-right">
 					<button class="mo-button--small" @click.stop="hide">取消</button>
 					<button class="mo-button--small mo-button--primary" @click.stop="ensure">确定</button>
@@ -65,8 +65,6 @@
 			initValue(date) {
 				if (date) {
 					if (date instanceof Date) {
-						//debugger 
-						//date = formatDate(date, this.format)
 						this.dateTime = date
 						this.date = formatDate(date, this.format)
 						this.day = formatDate(date, 'yy-MM-dd')
@@ -97,7 +95,7 @@
 				this.dateChange()
 			},
 			timeChange (val) {
-				console.log(val)
+				//console.log(val)
 				this.time = val
 				this.dateChange()
 			},
@@ -111,12 +109,20 @@
 					}
 					date = convertDate(date)
 				}
-				console.log(date)
-
+				this.dateTime = date
+				//console.log(date)
+				//
 			},
-
+			today () {
+				this.dateTime = new Date()
+				this.ensure()
+			},
 			ensure () {
-
+				if (!this.dateTime) {
+					this.dateTime = new Date()
+				}
+				this.date = formatDate(this.dateTime, this.format)
+				this.hide()
 			}
 		},
 		mounted () {

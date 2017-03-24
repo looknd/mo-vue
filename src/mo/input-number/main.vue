@@ -1,6 +1,6 @@
 <template>
 	<label class="mo-number-input">
-		<input type="text" v-model.number="val" :style="inputStyle" :class="inputClass" :disabled="disabled" @change="change" :maxlength="maxlength">
+		<input type="text" v-model.number="val" :style="inputStyle" :class="inputClass" :disabled="disabled" @change="onChange" :maxlength="maxlength">
 		<span class="mo-number__control" @click.stop>
 			<a class="mo-number__plus" @click="plus" :disabled="disabledPlus">
 				<i class="mo-icon__arrow_up"></i>
@@ -34,10 +34,11 @@
 			}
 		},
 		methods : {
+			onChange() {
+				this.initVal()
+				this.change()
+			},
 			change() {
-				if (isNaN(this.val)) {
-					this.val = ''
-				}
 				this.$emit('input', this.val)
 			},
 			plus () {
@@ -57,6 +58,32 @@
 				val -= this.step
 				this.val = val
 				this.change()
+			},
+			isEffectiveVal (number) {
+				return number || number == 0 
+			},
+			initVal () {
+				let val = this.val
+				if (this.isEffectiveVal(val)) {
+					val = Number(val)
+					const step = this.isEffectiveVal(this.step) ? Number(this.step) : 0 
+					if (this.isEffectiveVal(this.min) ) {
+						const min = Number(this.min)
+						if (val <= min) {
+							this.val = min 
+							return
+						}
+					}
+					if (this.isEffectiveVal(this.max)) {
+						const max = Number(this.max) 
+						if (val >= max) {
+							this.val = max 
+							return 
+						}
+					}
+				} else {
+					this.val = ''
+				}
 			}
 		},
 		computed : {
@@ -67,7 +94,7 @@
 				let val = this.val || 0
 				let max = this.max
 				let step = Number(this.step)
-				if (max || max == 0) {
+				if (this.isEffectiveVal(max)) {
 					return val + step > max
 				}
 
@@ -80,7 +107,7 @@
 				let min = this.min
 				let val = this.val || 0
 				let step = Number(this.step)
-				if (min || min == 0) {
+				if (this.isEffectiveVal(min)) {
 					return val - step < min 
 				}
 				return false
@@ -104,6 +131,13 @@
 		watch : {
 			value (val) {
 				this.val = val
+				this.isEffectiveVal(val) && this.initVal()
+			},
+			min (val) {
+				this.isEffectiveVal(val) && this.initVal()
+			},
+			max (val) {
+				this.isEffectiveVal(val) && this.initVal()
 			}
 		}
 	}
