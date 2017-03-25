@@ -18,8 +18,8 @@
 				</mo-tabs>
 				<mo-tabs v-model="demo1Tab">
 					<mo-tab tab="Demo" name="demo">
-						<!-- 	<mo-date min="2017-3-18" max="2017-3-28"></mo-date>
-						<mo-time format="hh:mm" v-model="time"></mo-time> -->
+						<mo-date min="2017-3-18" :onlyYear="true"></mo-date>
+						<!-- <mo-time format="hh:mm" v-model="time"></mo-time> -->
 							<!-- <mo-input-number :min="0" :max="10" size="small" width="60px"></mo-input-number> -->
 							<mo-date-picker v-model="time" :showToday="false"></mo-date-picker>
 					</mo-tab>

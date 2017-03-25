@@ -14,13 +14,13 @@
 <style lang="scss">
 	@import '~scss/import.scss'; 
 	.mo-time {
-		width: rem(292);
+		width: rem(280);
 		height: 3rem;
 		border: 1px solid $color-border;
 		overflow: hidden;
 		background-color: #fff;
 		user-select: none;
-		padding: .5rem 1rem;
+		padding: .5rem;
 		.mo-time__body {
 			text-align: center;
 			font-size: 0;
