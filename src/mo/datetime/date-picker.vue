@@ -6,11 +6,11 @@
 		<div class="mo-datetime-picker__panel" :class="{'only-datepicker' : !onlyDatePicker}" ref="panel" v-show="visible">
 			<mo-date v-model="dateTime" @change="dayChange"></mo-date>
 			<mo-time v-model="dateTime" @change="timeChange"></mo-time>
-			<div class="picker-panel__actions mo-clearfix">
-				<a class="mo-button--small mo-button--link mo-left" @click.stop="today">今天</a>
-				<div class="mo-right">
-					<button class="mo-button--small" @click.stop="hide">取消</button>
-					<button class="mo-button--small mo-button--primary" @click.stop="ensure">确定</button>
+			<div class="picker-panel__actions mo-clearfix" v-if="showToday || showCancel || showEnsure">
+				<a class="mo-button--small mo-button--link mo-left" v-if="showToday" :class="{'mo-left' : showCancel || showEnsure, 'mo-center' : !showCancel && !showEnsure}" @click.stop="today">今天</a>
+				<div :class="{'mo-right' : showToday, 'mo-center' : !showToday}">
+					<button class="mo-button--small" v-if="showCancel" @click.stop="hide">取消</button>
+					<button class="mo-button--small mo-button--primary" v-if="showEnsure" @click.stop="ensure">确定</button>
 				</div>
 			</div>
 		</div>
@@ -33,6 +33,29 @@
 			value: [String, Date],
 			onlyDatePicker : Boolean,
 			onlyTimePicker : Boolean,
+
+			//点击日期后自动关闭并选择当前日期
+			autoClose : Boolean, 
+			
+			//是否显示今天按钮
+			showToday : {
+				type : Boolean,
+				default : true
+			},
+
+			//显示确定按钮
+			showEnsure : {
+				type : Boolean,
+				default : true
+			},
+
+			//显示取消按钮
+			showCancel : {
+				type : Boolean,
+				default : true
+			},
+
+			//日期时间格式
 			format : {
 				type : String,
 				default : 'yy-MM-dd hh:mm:ss'
@@ -49,11 +72,15 @@
 		},
 		methods : {
 			show() {
+				this.initValue(this.date)
+				//this.dateTime = this.date
+				//this.initValue(this.dateTime)
 				this.resetOffset()
 				this.visible = true
 				this.$emit('onFocus', this)
 			},
 			hide() {
+				this.dateTime = null
 				this.visible = false
 			},
 			resetOffset () {
@@ -63,6 +90,7 @@
 				$picker.style.cssText += `top:${offset.top + rect.height}px;left:${offset.left}px;`
 			},
 			initValue(date) {
+
 				if (date) {
 					if (date instanceof Date) {
 						this.dateTime = date
@@ -72,14 +100,16 @@
 					} else {
 						let reg = /^((\d){2,4}.*)((\d){1,2}.*)((\d){1,2}.*)((\d){1,2}.*)?((\d){1,2}.*)?((\d){1,2}.*)?$/
 						let timeReg = /^((\d){1,2}.*)((\d){1,2}.*)((\d){1,2}.*)?$/
-						if (this.onlyTimePicker) {
-							if (reg.test(date) || timeReg.test(date)) {
-								date = convertDate(date)
-								this.dateTime = date
-								this.date = formatDate(date, this.format)
-								this.day = formatDate(date, 'yy-MM-dd')
-								this.time = formatDate(date, 'hh:mm:ss')
-							}
+						let isDate = reg.test(date)
+						if (!isDate && this.onlyTimePicker) {
+							isDate = timeReg.test(date)
+						}
+						if (isDate) {
+							date = convertDate(date)
+							this.dateTime = date
+							this.date = formatDate(date, this.format)
+							this.day = formatDate(date, 'yy-MM-dd')
+							this.time = formatDate(date, 'hh:mm:ss')
 						}
 					}
 				} else {
@@ -92,8 +122,17 @@
 
 			dayChange (val) {
 				this.day = val
-				this.dateChange()
+				//如果设置了自动关闭，或者不显示确定按钮，
+				//则直接赋值并关闭
+				if (this.autoClose || !this.showEnsure) {
+					this.dateTime = this.day
+					this.ensure() 
+				} else {
+					this.dateChange()
+				}
 			},
+
+
 			timeChange (val) {
 				//console.log(val)
 				this.time = val

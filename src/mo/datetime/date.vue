@@ -595,11 +595,13 @@
 				value (val, oldVal) {
 					if (val === oldVal) {
 						return
-					} 
+					}
+					this.date = val 
 					this.date = this.getCurrentDate()
 					const map = this.initDateMap()
 					this.year = map.year
 					this.month = map.month
+					this.panel = this.onlyYear ? 'year' : (this.onlyMonth ? 'month' : 'day')
 				},
 				min (val, oldVal) {
 					if (val === oldVal) {

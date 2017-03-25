@@ -39,7 +39,9 @@
 				this.change()
 			},
 			change() {
-				this.$emit('input', this.val)
+				const val = this.val || ''
+				this.$emit('input', val)
+				this.$emit('change', val)
 			},
 			plus () {
 				let val = this.val || 0
@@ -91,9 +93,9 @@
 				if (this.disabled) {
 					return true
 				}
-				let val = this.val || 0
-				let max = this.max
-				let step = Number(this.step)
+				const val = this.val || 0,
+				max = this.max,
+				step = Number(this.step)
 				if (this.isEffectiveVal(max)) {
 					return val + step > max
 				}
@@ -104,9 +106,9 @@
 				if (this.disabled) {
 					return true
 				}
-				let min = this.min
-				let val = this.val || 0
-				let step = Number(this.step)
+				const min = this.min,
+				val = this.val || 0,
+				step = Number(this.step)
 				if (this.isEffectiveVal(min)) {
 					return val - step < min 
 				}
