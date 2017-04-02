@@ -1,4 +1,4 @@
-# mo-vue
+# Mo-vue
 
 > vue 2.0 ui components
 
@@ -16,10 +16,18 @@ npm run build
 
 ```
 
+## 目录
+
+``` html 
+src : 文档和实例
+packages : MoUi
+```
 
 ## 进度
 
-- paging <分页组件> 已完成
-- tabs <选项卡组件> 已完成
-- modal <模态框组件> 已完成
+- paging <分页> 已完成
+- tabs <选项卡> 已完成
+- modal <模态框> 已完成
 - inputNumber <数字计数器> 已完成
+- datepicker <日期> 进行中...
+- layer <confirm | alert | toast> 进行中...
