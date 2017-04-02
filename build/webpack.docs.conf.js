@@ -8,43 +8,21 @@ var CopyWebpackPlugin = require('copy-webpack-plugin')
 var HtmlWebpackPlugin = require('html-webpack-plugin')
 var ExtractTextPlugin = require('extract-text-webpack-plugin')
 var OptimizeCSSPlugin = require('optimize-css-assets-webpack-plugin')
-var packageJson = require('../package.json')
+
 var env = config.build.env
 
-
-const banner = `MoUI v${packageJson.version} (https://github.com/S-mohan/mo-vue)
-(c) ${packageJson.author}
-license ${packageJson.license}`
-
-
-delete baseWebpackConfig.entry
-
-
 var webpackConfig = merge(baseWebpackConfig, {
-  entry: {
-    'mo': './packages/index.js'
-  },
   module: {
     rules: utils.styleLoaders({
       sourceMap: config.build.productionSourceMap,
       extract: true
     })
   },
-  //banner : banner,
-  devtool: false,
+  devtool: config.build.productionSourceMap ? '#source-map' : false,
   output: {
-    path: config.build.assetsMoRoot,
-    filename: utils.assetsPath('[name].js'),
-    library: 'MoUi',
-    libraryTarget: 'umd'
-  },
-  externals: {
-    vue: {
-      root: 'Vue',
-      commonjs2: 'vue',
-      amd: 'vue',
-      commonjs: 'vue'
-    }
+    path: config.build.assetsRoot,
+    filename: utils.assetsPath('js/[name].[chunkhash].js'),
+    chunkFilename: utils.assetsPath('js/[id].[chunkhash].js')
   },
   plugins: [
     // http://vuejs.github.io/vue-loader/en/workflow/production.html
@@ -59,18 +37,21 @@ var webpackConfig = merge(baseWebpackConfig, {
     }),
     // extract css into its own file
     new ExtractTextPlugin({
-      filename: utils.assetsPath('[name].css')
+      filename: utils.assetsPath('css/[name].[contenthash].css')
     }),
     // Compress extracted CSS. We are using this plugin so that possible
     // duplicated CSS from different components can be deduped.
-    new OptimizeCSSPlugin(),
-    new webpack.BannerPlugin(banner),
+    new OptimizeCSSPlugin({
+      cssProcessorOptions: {
+        safe: true
+      }
+    }),
     // generate dist index.html with correct asset hash for caching.
     // you can customize output by editing /index.html
     // see https://github.com/ampedandwired/html-webpack-plugin
-    /*new HtmlWebpackPlugin({
+    new HtmlWebpackPlugin({
       filename: config.build.index,
-      template: 'index.html',
+      template: path.resolve(__dirname, '../src/index.html'),
       inject: true,
       minify: {
         removeComments: true,
@@ -109,24 +90,11 @@ var webpackConfig = merge(baseWebpackConfig, {
         to: config.build.assetsSubDirectory,
         ignore: ['.*']
       }
-    ])*/
-     new webpack.optimize.CommonsChunkPlugin({
-      name: 'vendor',
-      minChunks: function (module, count) {
-        // any required modules inside node_modules are extracted to vendor
-        return (
-          module.resource &&
-          /\.js$/.test(module.resource) &&
-          module.resource.indexOf(
-            path.join(__dirname, '../node_modules')
-          ) === 0
-        )
-      }
-    })
+    ])
   ]
 })
 
-/*if (config.build.productionGzip) {
+if (config.build.productionGzip) {
   var CompressionWebpackPlugin = require('compression-webpack-plugin')
 
   webpackConfig.plugins.push(
@@ -147,6 +115,6 @@ var webpackConfig = merge(baseWebpackConfig, {
 if (config.build.bundleAnalyzerReport) {
   var BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
   webpackConfig.plugins.push(new BundleAnalyzerPlugin())
-}*/
+}
 
 module.exports = webpackConfig

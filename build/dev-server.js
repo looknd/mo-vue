@@ -59,23 +59,31 @@ app.use(devMiddleware)
 app.use(hotMiddleware)
 
 // serve pure static assets
-/*var staticPath = path.posix.join(config.dev.assetsPublicPath, config.dev.assetsSubDirectory)
-app.use(staticPath, express.static('./static'))*/
+var staticPath = path.posix.join(config.dev.assetsPublicPath, config.dev.assetsSubDirectory)
+app.use(staticPath, express.static('./static'))
 
 var uri = 'http://localhost:' + port
 
-devMiddleware.waitUntilValid(function () {
-  console.log('> Listening at ' + uri + '\n')
+var _resolve
+var readyPromise = new Promise(resolve => {
+  _resolve = resolve
 })
 
-module.exports = app.listen(port, function (err) {
-  if (err) {
-    console.log(err)
-    return
-  }
-
+console.log('> Starting dev server...')
+devMiddleware.waitUntilValid(() => {
+  console.log('> Listening at ' + uri + '\n')
   // when env is testing, don't need open it
   if (autoOpenBrowser && process.env.NODE_ENV !== 'testing') {
     opn(uri)
   }
+  _resolve()
 })
+
+var server = app.listen(port)
+
+module.exports = {
+  ready: readyPromise,
+  close: () => {
+    server.close()
+  }
+}
