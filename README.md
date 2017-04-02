@@ -29,5 +29,6 @@ packages : MoUi
 - tabs <选项卡> 已完成
 - modal <模态框> 已完成
 - inputNumber <数字计数器> 已完成
+- icon <图标> 已完成
 - datepicker <日期> 进行中...
 - layer <confirm | alert | toast> 进行中...

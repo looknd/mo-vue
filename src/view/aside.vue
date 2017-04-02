@@ -25,6 +25,9 @@
 						<router-link to="/modal" tag="li">
 							<a>Modal</a>
 						</router-link>
+						<router-link to="/icon" tag="li">
+							<a>Icon</a>
+						</router-link>
 						<router-link to="/input-number" tag="li">
 							<a>InputNumber</a>
 						</router-link>
