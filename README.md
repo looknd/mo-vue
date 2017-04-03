@@ -2,6 +2,11 @@
 
 > vue 2.0 ui components
 
+
+## Demo
+
+[demo && docs](https://s-mohan.github.io/demo/mo-vue/)
+
 ## Build Setup
 
 ``` bash
