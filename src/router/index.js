@@ -7,38 +7,34 @@ import Paging from '@/components/paging'
 import Modal from '@/components/modal'
 import InputNumber from '@/components/input-number'
 import Icon from '@/components/icon'
-
+import Layer from '@/components/layer'
 
 
 
 Vue.use(Router)
 
 export default new Router({
-  routes: [
-  {
+  routes: [{
     path: '/install',
     component: Install
-  },
-  {
+  }, {
     path: '/tabs',
     component: Tabs
-  },
-  {
+  }, {
     path: '/paging',
     component: Paging
-  },
-  {
+  }, {
     path: '/modal',
     component: Modal
-  },
-  {
+  }, {
     path: '/input-number',
     component: InputNumber
-  },
-  {
+  }, {
     path: '/icon',
     component: Icon
-  }
-  ],
+  }, {
+    path: '/layer',
+    component: Layer
+  }],
   linkActiveClass: 'active',
 })

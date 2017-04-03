@@ -28,7 +28,7 @@
 		padding: 1px 0 0 1px;
 		list-style: none;
 		.icon-item {
-			width: 5rem;
+			width: 6rem;
 			height: 5rem;
 			border: 1px solid $color-border;
 			display: flex;
@@ -39,7 +39,7 @@
 			margin-left: -1px;
 			position: relative; 
 			background-color: #fff;
-			
+			cursor: zoom-in;
 			small {
 				margin-top: .5rem;
 			}
@@ -51,6 +51,7 @@
 				border-color: $color-primary;
 				color: #fff;
 				box-shadow: $box-shadow;
+				cursor: default;
 			}
 		}
 	}

@@ -3,7 +3,7 @@
 </template>
 <script>
 	import marked from 'marked'
-	require('highlight.js/styles/github.css')
+	require('highlight.js/styles/github-gist.css')
 	export default {
 		props: {
 			text: {

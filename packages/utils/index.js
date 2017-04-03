@@ -4,10 +4,6 @@ const isPlainObject = obj => Object.prototype.toString.call(obj) === '[object Ob
 
 const isFunction = obj => typeof obj === 'function'
 
-
-
-
-
 /**
  * 拷贝源对象到目标对象
  * @param  {Object} target 目标对象
